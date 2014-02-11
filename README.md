@@ -34,6 +34,6 @@ The main branches in this repository are the following:
 
  * `svn/authors`  
    Helper branch (detached history) to hold the SVN <-> Git author mappings.
-   See the separate [README] [3].
+   See the separate [README] [6].
 
 [6]: https://github.com/pah/rapidjson/blob/svn/authors/README.md
