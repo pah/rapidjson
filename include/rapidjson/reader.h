@@ -39,7 +39,7 @@ namespace rapidjson {
 enum ParseFlag {
 	kParseDefaultFlags = 0,			//!< Default parse flags. Non-destructive parsing. Text strings are decoded into allocated buffer.
 	kParseInsituFlag = 1,			//!< In-situ(destructive) parsing.
-	kParseValidateEncodingFlag = 2	//!< Validate encoding of JSON strings.
+	kParseValidateEncodingFlag = 2,	//!< Validate encoding of JSON strings.
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -217,7 +217,7 @@ public:
 	{}
 
 #ifdef RAPIDJSON_ACCEPT_ANY_ROOT
-	//! accept arbitrary root elements (not only arrays and objects)
+	//! Accept arbitrary root elements (not only arrays and objects)
 	GenericReader& AcceptAnyRoot(bool yesno = true) { acceptAnyRoot_ = yesno; return *this; }
 #endif
 
