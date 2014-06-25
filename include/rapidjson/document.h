@@ -101,23 +101,23 @@ public:
 		data_.n.i64 = i64;
 		if (i64 >= 0) {
 			flags_ |= kNumberUint64Flag;
-			if (!(i64 & 0xFFFFFFFF00000000LL))
+			if (!(static_cast<uint64_t>(i64) & UINT64_C(0xFFFFFFFF00000000)))
 				flags_ |= kUintFlag;
-			if (!(i64 & 0xFFFFFFFF80000000LL))
+			if (!(static_cast<uint64_t>(i64) & UINT64_C(0xFFFFFFFF80000000)))
 				flags_ |= kIntFlag;
 		}
-		else if (i64 >= -2147483648LL)
+		else if (i64 >= INT64_C(-2147483648))
 			flags_ |= kIntFlag;
 	}
 
 	//! Constructor for uint64_t value.
 	explicit GenericValue(uint64_t u64) : flags_(kNumberUint64Flag) {
 		data_.n.u64 = u64;
-		if (!(u64 & 0x8000000000000000ULL))
+		if (!(u64 & UINT64_C(0x8000000000000000)))
 			flags_ |= kInt64Flag;
-		if (!(u64 & 0xFFFFFFFF00000000ULL))
+		if (!(u64 & UINT64_C(0xFFFFFFFF00000000)))
 			flags_ |= kUintFlag;
-		if (!(u64 & 0xFFFFFFFF80000000ULL))
+		if (!(u64 & UINT64_C(0xFFFFFFFF80000000)))
 			flags_ |= kIntFlag;
 	}
 
@@ -154,7 +154,7 @@ public:
 				break;
 
 			case kObjectFlag:
-				for (Member* m = data_.o.members; m != data_.o.members + data_.o.size; ++m) {
+				for (MemberIterator m = MemberBegin(); m != MemberEnd(); ++m) {
 					m->name.~GenericValue();
 					m->value.~GenericValue();
 				}
@@ -259,7 +259,7 @@ public:
 		A better approach is to use the now public FindMember().
 	*/
 	GenericValue& operator[](const Ch* name) {
-		if (Member* member = FindMember(name))
+		if (MemberIterator member = FindMember(name))
 			return member->value;
 		else {
 			RAPIDJSON_ASSERT(false);	// see above note
@@ -268,6 +268,19 @@ public:
 		}
 	}
 	const GenericValue& operator[](const Ch* name) const { return const_cast<GenericValue&>(*this)[name]; }
+
+	// This version is faster because it does not need a StrLen(). 
+	// It can also handle string with null character.
+	GenericValue& operator[](const GenericValue& name) {
+		if (Member* member = FindMember(name))
+			return member->value;
+		else {
+			RAPIDJSON_ASSERT(false);	// see above note
+			static GenericValue NullValue;
+			return NullValue;
+		}
+	}
+	const GenericValue& operator[](const GenericValue& name) const { return const_cast<GenericValue&>(*this)[name]; }
 
 	//! Member iterators.
 	ConstMemberIterator MemberBegin() const	{ RAPIDJSON_ASSERT(IsObject()); return data_.o.members; }
@@ -281,23 +294,40 @@ public:
 	*/
 	bool HasMember(const Ch* name) const { return FindMember(name) != 0; }
 
+	// This version is faster because it does not need a StrLen(). 
+	// It can also handle string with null character.
+	bool HasMember(const GenericValue& name) const { return FindMember(name) != 0; }
+
 	//! Find member by name.
 	/*!
 		\return Return the member if exists. Otherwise returns null pointer.
 	*/
-	Member* FindMember(const Ch* name) {
+	MemberIterator FindMember(const Ch* name) {
 		RAPIDJSON_ASSERT(name);
 		RAPIDJSON_ASSERT(IsObject());
 
 		SizeType len = internal::StrLen(name);
-		Object& o = data_.o;
-		for (Member* member = o.members; member != data_.o.members + data_.o.size; ++member)
+		for (MemberIterator member = MemberBegin(); member != MemberEnd(); ++member)
 			if (member->name.data_.s.length == len && memcmp(member->name.data_.s.str, name, len * sizeof(Ch)) == 0)
 				return member;
 
 		return 0;
 	}
-	const Member* FindMember(const Ch* name) const { return const_cast<GenericValue&>(*this).FindMember(name); }
+	ConstMemberIterator FindMember(const Ch* name) const { return const_cast<GenericValue&>(*this).FindMember(name); }
+
+	// This version is faster because it does not need a StrLen(). 
+	// It can also handle string with null character.
+	MemberIterator FindMember(const GenericValue& name) {
+		RAPIDJSON_ASSERT(IsObject());
+		RAPIDJSON_ASSERT(name.IsString());
+		SizeType len = name.data_.s.length;
+		for (MemberIterator member = MemberBegin(); member != MemberEnd(); ++member)
+			if (member->name.data_.s.length == len && memcmp(member->name.data_.s.str, name.data_.s.str, len * sizeof(Ch)) == 0)
+				return member;
+
+		return 0;
+	}
+	ConstMemberIterator FindMember(const GenericValue& name) const { return const_cast<GenericValue&>(*this).FindMember(name); }
 
 	//! Add a member (name-value pair) to the object.
 	/*! \param name A string value as name of member.
@@ -309,6 +339,7 @@ public:
 	GenericValue& AddMember(GenericValue& name, GenericValue& value, Allocator& allocator) {
 		RAPIDJSON_ASSERT(IsObject());
 		RAPIDJSON_ASSERT(name.IsString());
+
 		Object& o = data_.o;
 		if (o.size >= o.capacity) {
 			if (o.capacity == 0) {
@@ -350,26 +381,49 @@ public:
 	    \note Removing member is implemented by moving the last member. So the ordering of members is changed.
 	*/
 	bool RemoveMember(const Ch* name) {
-		RAPIDJSON_ASSERT(IsObject());
-		if (Member* m = FindMember(name)) {
-			RAPIDJSON_ASSERT(data_.o.size > 0);
-			RAPIDJSON_ASSERT(data_.o.members != 0);
-
-			Member* last = data_.o.members + (data_.o.size - 1);
-			if (data_.o.size > 1 && m != last) {
-				// Move the last one to this place
-				m->name = last->name;
-				m->value = last->value;
-			}
-			else {
-				// Only one left, just destroy
-				m->name.~GenericValue();
-				m->value.~GenericValue();
-			}
-			--data_.o.size;
+		MemberIterator m = FindMember(name);
+		if (m) {
+			RemoveMember(m);
 			return true;
 		}
-		return false;
+		else
+			return false;
+	}
+
+	bool RemoveMember(const GenericValue& name) {
+		MemberIterator m = FindMember(name);
+		if (m) {
+			RemoveMember(m);
+			return true;
+		}
+		else
+			return false;
+	}
+
+	//! Remove a member in object by iterator.
+	/*! \param m member iterator (obtained by FindMember() or MemberBegin()).
+		\return the new iterator after removal.
+		\note Removing member is implemented by moving the last member. So the ordering of members is changed.
+	*/
+	MemberIterator RemoveMember(MemberIterator m) {
+		RAPIDJSON_ASSERT(IsObject());
+		RAPIDJSON_ASSERT(data_.o.size > 0);
+		RAPIDJSON_ASSERT(data_.o.members != 0);
+		RAPIDJSON_ASSERT(m >= MemberBegin() && m < MemberEnd());
+
+		MemberIterator last = data_.o.members + (data_.o.size - 1);
+		if (data_.o.size > 1 && m != last) {
+			// Move the last one to this place
+			m->name = last->name;
+			m->value = last->value;
+		}
+		else {
+			// Only one left, just destroy
+			m->name.~GenericValue();
+			m->value.~GenericValue();
+		}
+		--data_.o.size;
+		return m;
 	}
 
 	//@}
@@ -401,7 +455,6 @@ public:
 
 	//! Get an element from array by index.
 	/*! \param index Zero-based index of element.
-		\note
 \code
 Value a(kArrayType);
 a.PushBack(123);
@@ -498,7 +551,7 @@ int z = a[0u].GetInt();				// This works too.
 	const Ch* GetString() const { RAPIDJSON_ASSERT(IsString()); return data_.s.str; }
 
 	//! Get the length of string.
-	/*! Since rapidjson permits "\u0000" in the json string, strlen(v.GetString()) may not equal to v.GetStringLength().
+	/*! Since rapidjson permits "\\u0000" in the json string, strlen(v.GetString()) may not equal to v.GetStringLength().
 	*/
 	SizeType GetStringLength() const { RAPIDJSON_ASSERT(IsString()); return data_.s.length; }
 
@@ -550,7 +603,7 @@ int z = a[0u].GetInt();				// This works too.
 
 		case kObjectType:
 			handler.StartObject();
-			for (Member* m = data_.o.members; m != data_.o.members + data_.o.size; ++m) {
+			for (ConstMemberIterator m = MemberBegin(); m != MemberEnd(); ++m) {
 				handler.String(m->name.data_.s.str, m->name.data_.s.length, (m->name.flags_ & kCopyFlag) != 0);
 				m->value.Accept(handler);
 			}
@@ -720,7 +773,7 @@ typedef GenericValue<UTF8<> > Value;
 
 //! A document for parsing JSON text as DOM.
 /*!
-	\implements Handler
+	\note implements Handler concept
 	\tparam Encoding encoding for both parsing and string storage.
 	\tparam Allocator allocator for allocating memory for the DOM, and the stack during parsing.
 */
@@ -748,7 +801,7 @@ public:
 
 	//! Parse JSON text from an input stream.
 	/*! \tparam parseFlags Combination of ParseFlag.
-		\param stream Input stream to be parsed.
+		\param is Input stream to be parsed.
 		\return The document itself for fluent API.
 	*/
 	template <unsigned parseFlags, typename SourceEncoding, typename InputStream>
