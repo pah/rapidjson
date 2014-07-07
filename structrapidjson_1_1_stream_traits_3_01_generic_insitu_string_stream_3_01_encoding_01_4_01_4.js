@@ -1,0 +1,4 @@
+var structrapidjson_1_1_stream_traits_3_01_generic_insitu_string_stream_3_01_encoding_01_4_01_4 =
+[
+    [ "copyOptimization", "structrapidjson_1_1_stream_traits_3_01_generic_insitu_string_stream_3_01_encoding_01_4_01_4.html#a7ea3c3f01dc197d5f53b226ebb77647aab943169f50f1fc0616fedc1dd2605201", null ]
+];
