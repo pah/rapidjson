@@ -90,7 +90,7 @@ $(document).ready(function(){initNavTree('filereadstream_8h_source.html','');});
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="rapidjson_8h.html">rapidjson.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;cstdio&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerapidjson.html">rapidjson</a> {</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>rapidjson {</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//! File byte stream for input using fread().</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"></span><span class="comment">/*!</span></div>
@@ -112,18 +112,18 @@ $(document).ready(function(){initNavTree('filereadstream_8h_source.html','');});
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        Read();</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    }</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    Ch Peek()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> *current_; }</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    Ch Take() { Ch c = *current_; Read(); <span class="keywordflow">return</span> c; }</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="classrapidjson_1_1_file_read_stream.html#a4a5f34875b40d22def206c9a09ecd929">Ch</a> Peek()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> *current_; }</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="classrapidjson_1_1_file_read_stream.html#a4a5f34875b40d22def206c9a09ecd929">Ch</a> Take() { <a class="code" href="classrapidjson_1_1_file_read_stream.html#a4a5f34875b40d22def206c9a09ecd929">Ch</a> c = *current_; Read(); <span class="keywordflow">return</span> c; }</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">size_t</span> Tell()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> count_ + <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(current_ - buffer_); }</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="comment">// Not implemented</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">void</span> Put(Ch) { <a class="code" href="rapidjson_8h.html#abeba18d612187bad2ac62aed9276d47c">RAPIDJSON_ASSERT</a>(<span class="keyword">false</span>); }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">void</span> Put(<a class="code" href="classrapidjson_1_1_file_read_stream.html#a4a5f34875b40d22def206c9a09ecd929">Ch</a>) { <a class="code" href="rapidjson_8h.html#abeba18d612187bad2ac62aed9276d47c">RAPIDJSON_ASSERT</a>(<span class="keyword">false</span>); }</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">void</span> Flush() { <a class="code" href="rapidjson_8h.html#abeba18d612187bad2ac62aed9276d47c">RAPIDJSON_ASSERT</a>(<span class="keyword">false</span>); } </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    Ch* PutBegin() { <a class="code" href="rapidjson_8h.html#abeba18d612187bad2ac62aed9276d47c">RAPIDJSON_ASSERT</a>(<span class="keyword">false</span>); <span class="keywordflow">return</span> 0; }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">size_t</span> PutEnd(Ch*) { <a class="code" href="rapidjson_8h.html#abeba18d612187bad2ac62aed9276d47c">RAPIDJSON_ASSERT</a>(<span class="keyword">false</span>); <span class="keywordflow">return</span> 0; }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="classrapidjson_1_1_file_read_stream.html#a4a5f34875b40d22def206c9a09ecd929">Ch</a>* PutBegin() { <a class="code" href="rapidjson_8h.html#abeba18d612187bad2ac62aed9276d47c">RAPIDJSON_ASSERT</a>(<span class="keyword">false</span>); <span class="keywordflow">return</span> 0; }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">size_t</span> PutEnd(<a class="code" href="classrapidjson_1_1_file_read_stream.html#a4a5f34875b40d22def206c9a09ecd929">Ch</a>*) { <a class="code" href="rapidjson_8h.html#abeba18d612187bad2ac62aed9276d47c">RAPIDJSON_ASSERT</a>(<span class="keyword">false</span>); <span class="keywordflow">return</span> 0; }</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="comment">// For encoding detection only.</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">const</span> Ch* Peek4()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">const</span> <a class="code" href="classrapidjson_1_1_file_read_stream.html#a4a5f34875b40d22def206c9a09ecd929">Ch</a>* Peek4()<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordflow">return</span> (current_ + 4 &lt;= bufferLast_) ? current_ : 0;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
@@ -146,10 +146,10 @@ $(document).ready(function(){initNavTree('filereadstream_8h_source.html','');});
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    FILE* fp_;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    Ch *buffer_;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="classrapidjson_1_1_file_read_stream.html#a4a5f34875b40d22def206c9a09ecd929">Ch</a> *buffer_;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">size_t</span> bufferSize_;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    Ch *bufferLast_;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    Ch *current_;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="classrapidjson_1_1_file_read_stream.html#a4a5f34875b40d22def206c9a09ecd929">Ch</a> *bufferLast_;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="classrapidjson_1_1_file_read_stream.html#a4a5f34875b40d22def206c9a09ecd929">Ch</a> *current_;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">size_t</span> readCount_;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">size_t</span> count_;  <span class="comment">//!&lt; Number of characters read</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment"></span>    <span class="keywordtype">bool</span> eof_;</div>
@@ -162,7 +162,6 @@ $(document).ready(function(){initNavTree('filereadstream_8h_source.html','');});
 <div class="ttc" id="classrapidjson_1_1_file_read_stream_html_a4db80567cfb2133bc368227e0d891281"><div class="ttname"><a href="classrapidjson_1_1_file_read_stream.html#a4db80567cfb2133bc368227e0d891281">rapidjson::FileReadStream::FileReadStream</a></div><div class="ttdeci">FileReadStream(FILE *fp, char *buffer, size_t bufferSize)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> filereadstream.h:23</div></div>
 <div class="ttc" id="rapidjson_8h_html_abeba18d612187bad2ac62aed9276d47c"><div class="ttname"><a href="rapidjson_8h.html#abeba18d612187bad2ac62aed9276d47c">RAPIDJSON_ASSERT</a></div><div class="ttdeci">#define RAPIDJSON_ASSERT(x)</div><div class="ttdoc">Assertion. </div><div class="ttdef"><b>Definition:</b> rapidjson.h:118</div></div>
 <div class="ttc" id="classrapidjson_1_1_file_read_stream_html_a4a5f34875b40d22def206c9a09ecd929"><div class="ttname"><a href="classrapidjson_1_1_file_read_stream.html#a4a5f34875b40d22def206c9a09ecd929">rapidjson::FileReadStream::Ch</a></div><div class="ttdeci">char Ch</div><div class="ttdoc">Character type (byte). </div><div class="ttdef"><b>Definition:</b> filereadstream.h:15</div></div>
-<div class="ttc" id="namespacerapidjson_html"><div class="ttname"><a href="namespacerapidjson.html">rapidjson</a></div><div class="ttdoc">main RapidJSON namespace </div><div class="ttdef"><b>Definition:</b> allocators.h:6</div></div>
 <div class="ttc" id="rapidjson_8h_html"><div class="ttname"><a href="rapidjson_8h.html">rapidjson.h</a></div><div class="ttdoc">common definitions and configuration </div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

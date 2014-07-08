@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('md_doc_stream.html','');});
 <p><code>StringStream</code> is the most basic input stream. It represents a complete, read-only JSON stored in memory. It is defined in <code><a class="el" href="rapidjson_8h.html" title="common definitions and configuration ">rapidjson/rapidjson.h</a></code>.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;rapidjson/document.h&quot;</span> <span class="comment">// will include &quot;rapidjson/rapidjson.h&quot;</span></div>
 <div class="line"></div>
-<div class="line"><span class="keyword">using namespace </span><a class="code" href="namespacerapidjson.html">rapidjson</a>;</div>
+<div class="line"><span class="keyword">using namespace </span>rapidjson;</div>
 <div class="line"></div>
 <div class="line"><span class="comment">// ...</span></div>
 <div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> json[] = <span class="stringliteral">&quot;[1, 2, 3, 4]&quot;</span>;</div>
@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('md_doc_stream.html','');});
 <div class="fragment"><div class="line"><span class="comment">// ...</span></div>
 <div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> json[] = <span class="stringliteral">&quot;[1, 2, 3, 4]&quot;</span>;</div>
 <div class="line"><a class="code" href="namespacerapidjson.html#a660c934c2959121babf799b6cb206659">Document</a> d;</div>
-<div class="line">d.<a class="code" href="classrapidjson_1_1_generic_document.html#aed942fafd833c88f52b535daef620f8d">Parse</a>(json);</div>
+<div class="line">d.Parse(json);</div>
 </div><!-- fragment --><p>Note that, <code>StringStream</code> is a typedef of <code>GenericStringStream&lt;UTF8&lt;&gt; &gt;</code>, user may use another encodings to represent the character set of the stream.</p>
 <h3>StringBuffer (Output)</h3>
 <p><code>StringBuffer</code> is a simple output stream. It allocates a memory buffer for writing the whole JSON. Use <code>GetString()</code> to obtain the buffer.</p>
@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('md_doc_stream.html','');});
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;rapidjson/filereadstream.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;cstdio&gt;</span></div>
 <div class="line"></div>
-<div class="line"><span class="keyword">using namespace </span><a class="code" href="namespacerapidjson.html">rapidjson</a>;</div>
+<div class="line"><span class="keyword">using namespace </span>rapidjson;</div>
 <div class="line"></div>
 <div class="line">FILE* fp = fopen(<span class="stringliteral">&quot;big.json&quot;</span>, <span class="stringliteral">&quot;rb&quot;</span>); <span class="comment">// non-Windows use &quot;r&quot;</span></div>
 <div class="line"></div>
@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('md_doc_stream.html','');});
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;rapidjson/filewritestream.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;cstdio&gt;</span></div>
 <div class="line"></div>
-<div class="line"><span class="keyword">using namespace </span><a class="code" href="namespacerapidjson.html">rapidjson</a>;</div>
+<div class="line"><span class="keyword">using namespace </span>rapidjson;</div>
 <div class="line"></div>
 <div class="line"><a class="code" href="classrapidjson_1_1_generic_document.html">Document</a> d;</div>
 <div class="line">d.<a class="code" href="classrapidjson_1_1_generic_document.html#aed942fafd833c88f52b535daef620f8d">Parse</a>(json);</div>
@@ -157,7 +157,7 @@ $(document).ready(function(){initNavTree('md_doc_stream.html','');});
 <div class="line"><a class="code" href="classrapidjson_1_1_file_write_stream.html">FileWriteStream</a> os(fp, writeBuffer, <span class="keyword">sizeof</span>(writeBuffer));</div>
 <div class="line"></div>
 <div class="line"><a class="code" href="classrapidjson_1_1_writer.html">Writer&lt;FileWriteStream&gt;</a> writer(os);</div>
-<div class="line">d.<a class="code" href="classrapidjson_1_1_generic_value.html#ac9787450c50b9ba3236de8c58d53df10">Accept</a>(writer);</div>
+<div class="line">d.Accept(writer);</div>
 <div class="line"></div>
 <div class="line">fclose(fp);</div>
 </div><!-- fragment --><p>It can also directs the output to <code>stdout</code>.</p>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('md_doc_stream.html','');});
 <div class="line"><span class="preprocessor">#include &quot;rapidjson/encodedstream.h&quot;</span>    <span class="comment">// EncodedInputStream</span></div>
 <div class="line"><span class="preprocessor">#include &lt;cstdio&gt;</span></div>
 <div class="line"></div>
-<div class="line"><span class="keyword">using namespace </span><a class="code" href="namespacerapidjson.html">rapidjson</a>;</div>
+<div class="line"><span class="keyword">using namespace </span>rapidjson;</div>
 <div class="line"></div>
 <div class="line">FILE* fp = fopen(<span class="stringliteral">&quot;utf16le.json&quot;</span>, <span class="stringliteral">&quot;rb&quot;</span>); <span class="comment">// non-Windows use &quot;r&quot;</span></div>
 <div class="line"></div>
@@ -216,7 +216,7 @@ $(document).ready(function(){initNavTree('md_doc_stream.html','');});
 <div class="line"><span class="preprocessor">#include &quot;rapidjson/encodedstream.h&quot;</span>    <span class="comment">// AutoUTFInputStream</span></div>
 <div class="line"><span class="preprocessor">#include &lt;cstdio&gt;</span></div>
 <div class="line"></div>
-<div class="line"><span class="keyword">using namespace </span><a class="code" href="namespacerapidjson.html">rapidjson</a>;</div>
+<div class="line"><span class="keyword">using namespace </span>rapidjson;</div>
 <div class="line"></div>
 <div class="line">FILE* fp = fopen(<span class="stringliteral">&quot;any.json&quot;</span>, <span class="stringliteral">&quot;rb&quot;</span>); <span class="comment">// non-Windows use &quot;r&quot;</span></div>
 <div class="line"></div>
@@ -233,7 +233,7 @@ $(document).ready(function(){initNavTree('md_doc_stream.html','');});
 <p>You can obtain the type of UTF via <code>UTFType GetType()</code>. And check whether a BOM is found by <code>HasBOM()</code></p>
 <h3>AutoUTFOutputStream</h3>
 <p>Similarly, to choose encoding for output during runtime, we can use <code>AutoUTFOutputStream</code>. This class is not automatic <em>per se</em>. You need to specify the UTF type and whether to write BOM in runtime.</p>
-<div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code" href="namespacerapidjson.html">rapidjson</a>;</div>
+<div class="fragment"><div class="line"><span class="keyword">using namespace </span>rapidjson;</div>
 <div class="line"></div>
 <div class="line"><span class="keywordtype">void</span> WriteJSONFile(FILE* fp, <a class="code" href="namespacerapidjson.html#a4aacabc0f8cea1cd628f466d890773eb">UTFType</a> type, <span class="keywordtype">bool</span> putBOM, <span class="keyword">const</span> <a class="code" href="classrapidjson_1_1_generic_document.html">Document</a>&amp; d) {</div>
 <div class="line">    <span class="keywordtype">char</span> writeBuffer[256];</div>
