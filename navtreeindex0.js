@@ -2,7 +2,6 @@ var NAVTREEINDEX0 =
 {
 "allocators_8h_source.html":[12,0,0,0,2],
 "annotated.html":[11,0],
-"classes.html":[11,1],
 "classrapidjson_1_1_allocator.html":[11,0,0,0],
 "classrapidjson_1_1_auto_u_t_f_input_stream.html":[11,0,0,2],
 "classrapidjson_1_1_auto_u_t_f_input_stream.html#a1e513c05b0be76071bfd31d528e8f3ed":[11,0,0,2,10],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "classrapidjson_1_1_memory_pool_allocator.html#aa050d52c62503ca6d6f66289ce83a18e":[11,0,0,21,4],
 "classrapidjson_1_1_memory_pool_allocator.html#aa1d5b36c67611937e8ad6b2be53a483e":[11,0,0,21,2],
 "classrapidjson_1_1_memory_pool_allocator.html#aad83829efa77ad26a23f74d6cab3d781":[11,0,0,21,7],
-"classrapidjson_1_1_memory_pool_allocator.html#abcc572bdb6902c9d69711540db5098a7":[11,0,0,21,1]
+"classrapidjson_1_1_memory_pool_allocator.html#abcc572bdb6902c9d69711540db5098a7":[11,0,0,21,1],
+"classrapidjson_1_1_pretty_writer.html":[11,0,0,22]
 };

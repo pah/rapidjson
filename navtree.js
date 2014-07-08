@@ -2,10 +2,61 @@ var NAVTREE =
 [
   [ "RapidJSON", "index.html", [
     [ "Features", "md_doc_features.html", null ],
-    [ "Tutorial", "md_doc_tutorial.html", null ],
-    [ "Stream", "md_doc_stream.html", null ],
+    [ "Tutorial", "md_doc_tutorial.html", [
+      [ "Value & Document", "md_doc_tutorial.html#ValueDocument", null ],
+      [ "Query Value", "md_doc_tutorial.html#QueryValue", [
+        [ "Query Array", "md_doc_tutorial.html#QueryArray", null ],
+        [ "Query Object", "md_doc_tutorial.html#QueryObject", null ],
+        [ "Querying Number", "md_doc_tutorial.html#QueryNumber", null ],
+        [ "Query String", "md_doc_tutorial.html#QueryString", null ]
+      ] ],
+      [ "Create/Modify Values", "md_doc_tutorial.html#CreateModifyValues", [
+        [ "Change Value Type", "md_doc_tutorial.html#ChangeValueType", null ],
+        [ "Move Semantics", "md_doc_tutorial.html#MoveSemantics", null ],
+        [ "Create String", "md_doc_tutorial.html#CreateString", null ],
+        [ "Modify Array", "md_doc_tutorial.html#ModifyArray", null ],
+        [ "Modify Object", "md_doc_tutorial.html#ModifyObject", null ],
+        [ "Deep Copy Value", "md_doc_tutorial.html#DeepCopyValue", null ],
+        [ "Swap Values", "md_doc_tutorial.html#SwapValues", null ]
+      ] ],
+      [ "What's next", "md_doc_tutorial.html#WhatsNext", null ]
+    ] ],
+    [ "Stream", "md_doc_stream.html", [
+      [ "Memory Streams", "md_doc_stream.html#MemoryStreams", [
+        [ "StringStream (Input)", "md_doc_stream.html#StringStream", null ],
+        [ "StringBuffer (Output)", "md_doc_stream.html#StringBuffer", null ]
+      ] ],
+      [ "File Streams", "md_doc_stream.html#FileStreams", [
+        [ "FileReadStream (Input)", "md_doc_stream.html#FileReadStream", null ],
+        [ "FileWriteStream (Output)", "md_doc_stream.html#FileWriteStream", null ]
+      ] ],
+      [ "Encoded Streams", "md_doc_stream.html#EncodedStreams", [
+        [ "EncodedInputStream", "md_doc_stream.html#EncodedInputStream", null ],
+        [ "EncodedOutputStream", "md_doc_stream.html#EncodedOutputStream", null ],
+        [ "AutoUTFInputStream", "md_doc_stream.html#AutoUTFInputStream", null ],
+        [ "AutoUTFOutputStream", "md_doc_stream.html#AutoUTFOutputStream", null ]
+      ] ],
+      [ "Custom Stream", "md_doc_stream.html#CustomStream", [
+        [ "Example: istream wrapper", "md_doc_stream.html#ExampleIStreamWrapper", null ],
+        [ "Example: ostream wrapper", "md_doc_stream.html#ExampleOStreamWrapper", null ]
+      ] ],
+      [ "Summary", "md_doc_stream.html#Summary", null ]
+    ] ],
     [ "Encoding", "md_doc_encoding.html", null ],
-    [ "DOM", "md_doc_dom.html", null ],
+    [ "DOM", "md_doc_dom.html", [
+      [ "Template", "md_doc_dom.html#Template", [
+        [ "Encoding", "md_doc_dom.html#Encoding", null ],
+        [ "Allocator", "md_doc_dom.html#Allocator", null ]
+      ] ],
+      [ "Parsing", "md_doc_dom.html#Parsing", [
+        [ "Parse Error", "md_doc_dom.html#ParseError", null ],
+        [ "In Situ Parsing", "md_doc_dom.html#InSituParsing", null ],
+        [ "Transcoding and Validation", "md_doc_dom.html#TranscodingAndValidation", null ]
+      ] ],
+      [ "Techniques", "md_doc_dom.html#Techniques", [
+        [ "User Buffer", "md_doc_dom.html#UserBuffer", null ]
+      ] ]
+    ] ],
     [ "SAX", "md_doc_sax.html", null ],
     [ "Performance", "md_doc_performance.html", null ],
     [ "Internals", "md_doc_internals.html", null ],
@@ -20,7 +71,6 @@ var NAVTREE =
     ] ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
-      [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", null ],
@@ -42,7 +92,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "allocators_8h_source.html",
-"classrapidjson_1_1_pretty_writer.html"
+"classrapidjson_1_1_pretty_writer.html#a0904943f70aaf532e6e7da2334310943"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
