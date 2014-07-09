@@ -12,7 +12,9 @@ var NAVTREE =
       ] ],
       [ "Create/Modify Values", "md_doc_tutorial.html#CreateModifyValues", [
         [ "Change Value Type", "md_doc_tutorial.html#ChangeValueType", null ],
-        [ "Move Semantics", "md_doc_tutorial.html#MoveSemantics", null ],
+        [ "Move Semantics", "md_doc_tutorial.html#MoveSemantics", [
+          [ "Move semantics and temporary values", "md_doc_tutorial.html#TemporaryValues", null ]
+        ] ],
         [ "Create String", "md_doc_tutorial.html#CreateString", null ],
         [ "Modify Array", "md_doc_tutorial.html#ModifyArray", null ],
         [ "Modify Object", "md_doc_tutorial.html#ModifyObject", null ],
@@ -92,7 +94,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "allocators_8h_source.html",
-"classrapidjson_1_1_pretty_writer.html#a0904943f70aaf532e6e7da2334310943"
+"classrapidjson_1_1_memory_pool_allocator.html#aa1d5b36c67611937e8ad6b2be53a483e",
+"structrapidjson_1_1_u_t_f8.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

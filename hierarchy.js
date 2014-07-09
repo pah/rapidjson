@@ -16,6 +16,7 @@ var hierarchy =
     [ "rapidjson::GenericMember< Encoding, Allocator >", "structrapidjson_1_1_generic_member.html", null ],
     [ "rapidjson::GenericReader< SourceEncoding, TargetEncoding, Allocator >", "classrapidjson_1_1_generic_reader.html", null ],
     [ "rapidjson::GenericStringBuffer< Encoding, Allocator >", "structrapidjson_1_1_generic_string_buffer.html", null ],
+    [ "rapidjson::GenericStringRef< CharType >", "structrapidjson_1_1_generic_string_ref.html", null ],
     [ "rapidjson::GenericStringStream< Encoding >", "structrapidjson_1_1_generic_string_stream.html", null ],
     [ "rapidjson::GenericValue< Encoding, Allocator >", "classrapidjson_1_1_generic_value.html", [
       [ "rapidjson::GenericDocument< Encoding, Allocator >", "classrapidjson_1_1_generic_document.html", null ]

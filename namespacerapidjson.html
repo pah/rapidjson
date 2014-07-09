@@ -145,6 +145,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrapidjson_1_1_generic_string_buffer.html">GenericStringBuffer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents an in-memory output stream.  <a href="structrapidjson_1_1_generic_string_buffer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrapidjson_1_1_generic_string_ref.html">GenericStringRef</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to a constant string (not taking a copy)  <a href="structrapidjson_1_1_generic_string_ref.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrapidjson_1_1_generic_string_stream.html">GenericStringStream</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only string stream.  <a href="structrapidjson_1_1_generic_string_stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -301,6 +304,14 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:aa6b9fd9f6aa49405a574c362ba9af6b5"><td class="memTemplParams" colspan="2">template&lt;typename CharType &gt; </td></tr>
+<tr class="memitem:aa6b9fd9f6aa49405a574c362ba9af6b5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structrapidjson_1_1_generic_string_ref.html">GenericStringRef</a>&lt; CharType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacerapidjson.html#aa6b9fd9f6aa49405a574c362ba9af6b5">StringRef</a> (const CharType *str)</td></tr>
+<tr class="memdesc:aa6b9fd9f6aa49405a574c362ba9af6b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark a character pointer as constant string.  <a href="#aa6b9fd9f6aa49405a574c362ba9af6b5">More...</a><br /></td></tr>
+<tr class="separator:aa6b9fd9f6aa49405a574c362ba9af6b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a578c51ab574a50a9c760b9da7c7562f2"><td class="memTemplParams" colspan="2">template&lt;typename CharType &gt; </td></tr>
+<tr class="memitem:a578c51ab574a50a9c760b9da7c7562f2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structrapidjson_1_1_generic_string_ref.html">GenericStringRef</a>&lt; CharType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacerapidjson.html#a578c51ab574a50a9c760b9da7c7562f2">StringRef</a> (const CharType *str, size_t length)</td></tr>
+<tr class="memdesc:a578c51ab574a50a9c760b9da7c7562f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark a character pointer as constant string.  <a href="#a578c51ab574a50a9c760b9da7c7562f2">More...</a><br /></td></tr>
+<tr class="separator:a578c51ab574a50a9c760b9da7c7562f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdaf1a7a4db30fb0e3d927fdf0fabe79"><td class="memItemLeft" align="right" valign="top">const RAPIDJSON_ERROR_CHARTYPE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerapidjson.html#abdaf1a7a4db30fb0e3d927fdf0fabe79">GetParseError_En</a> (<a class="el" href="namespacerapidjson.html#a7d3acf640886b1f2552dc8c4cd6dea60">ParseErrorCode</a> parseErrorCode)</td></tr>
 <tr class="memdesc:abdaf1a7a4db30fb0e3d927fdf0fabe79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps error code of parsing into error message.  <a href="#abdaf1a7a4db30fb0e3d927fdf0fabe79">More...</a><br /></td></tr>
 <tr class="separator:abdaf1a7a4db30fb0e3d927fdf0fabe79"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -580,6 +591,102 @@ template&lt;typename InputStream &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function has SSE2/SSE4.2 specialization. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa6b9fd9f6aa49405a574c362ba9af6b5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structrapidjson_1_1_generic_string_ref.html">GenericStringRef</a>&lt; CharType &gt; StringRef </td>
+          <td>(</td>
+          <td class="paramtype">const CharType *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark a character pointer as constant string. </p>
+<p>Mark a plain character pointer as a "string literal". This function can be used to avoid copying a character string to be referenced as a value in a JSON <a class="el" href="classrapidjson_1_1_generic_value.html" title="Represents a JSON value. Use Value for UTF8 encoding and default allocator. ">GenericValue</a> object, if the string's lifetime is known to be valid long enough. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">CharType</td><td>Character type of the string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>Constant string, lifetime assumed to be longer than the use of the string in e.g. a <a class="el" href="classrapidjson_1_1_generic_value.html" title="Represents a JSON value. Use Value for UTF8 encoding and default allocator. ">GenericValue</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structrapidjson_1_1_generic_string_ref.html" title="Reference to a constant string (not taking a copy) ">GenericStringRef</a> string reference object</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classrapidjson_1_1_generic_value.html#af79ec904eba90c32246053f2bc57d57d" title="Constructor for constant string (i.e. do not make a copy of string) ">GenericValue::GenericValue(StringRefType)</a>, <a class="el" href="classrapidjson_1_1_generic_value.html#a4a906dc5c4ad87c01dd5d3206aa799a2" title="Assignment of constant string reference (no copy) ">GenericValue::operator=(StringRefType)</a>, <a class="el" href="classrapidjson_1_1_generic_value.html#aabb538578a3c1e60c86cda32d062bc1c" title="Set this value as a string without copying source string. ">GenericValue::SetString(StringRefType)</a>, <a class="el" href="classrapidjson_1_1_generic_value.html#a41946915cb219a684f6ffc9341efee22" title="Append a constant string reference at the end of the array. ">GenericValue::PushBack(StringRefType, Allocator&amp;)</a>, <a class="el" href="classrapidjson_1_1_generic_value.html#ab018d734d189532b27943bc45776ba68" title="Add a member (name-value pair) to the object. ">GenericValue::AddMember</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a578c51ab574a50a9c760b9da7c7562f2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structrapidjson_1_1_generic_string_ref.html">GenericStringRef</a>&lt; CharType &gt; StringRef </td>
+          <td>(</td>
+          <td class="paramtype">const CharType *&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark a character pointer as constant string. </p>
+<p>Mark a plain character pointer as a "string literal". This function can be used to avoid copying a character string to be referenced as a value in a JSON <a class="el" href="classrapidjson_1_1_generic_value.html" title="Represents a JSON value. Use Value for UTF8 encoding and default allocator. ">GenericValue</a> object, if the string's lifetime is known to be valid long enough.</p>
+<p>This version has better performance with supplied length, and also supports string containing null characters.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">CharType</td><td>character type of the string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>Constant string, lifetime assumed to be longer than the use of the string in e.g. a <a class="el" href="classrapidjson_1_1_generic_value.html" title="Represents a JSON value. Use Value for UTF8 encoding and default allocator. ">GenericValue</a> </td></tr>
+    <tr><td class="paramname">length</td><td>The length of source string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structrapidjson_1_1_generic_string_ref.html" title="Reference to a constant string (not taking a copy) ">GenericStringRef</a> string reference object </dd></dl>
 
 </div>
 </div>

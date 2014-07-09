@@ -116,6 +116,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 , <a class="el" href="classrapidjson_1_1_file_write_stream.html#afc606cc81f6c3709d81bf99b30566330">rapidjson::FileWriteStream</a>
 , <a class="el" href="classrapidjson_1_1_generic_document.html#a95f6b4a61fa8db5625a241d2a4061c20">rapidjson::GenericDocument&lt; Encoding, Allocator &gt;</a>
 , <a class="el" href="classrapidjson_1_1_generic_reader.html#a490153694531b95fdf0a99a80efd9641">rapidjson::GenericReader&lt; SourceEncoding, TargetEncoding, Allocator &gt;</a>
+, <a class="el" href="structrapidjson_1_1_generic_string_ref.html#aa2a8eccae3d7eb14c30bc21afb7d6fba">rapidjson::GenericStringRef&lt; CharType &gt;</a>
 , <a class="el" href="classrapidjson_1_1_generic_value.html#adcdbc7fa85a9a41b78966d7e0dcc2ac4">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
 </li>
 <li>Clear()
@@ -181,11 +182,17 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>GenericReader()
 : <a class="el" href="classrapidjson_1_1_generic_reader.html#aa7a114cd5bb7cc5d75020fe5a1f139c9">rapidjson::GenericReader&lt; SourceEncoding, TargetEncoding, Allocator &gt;</a>
 </li>
+<li>GenericStringRef()
+: <a class="el" href="structrapidjson_1_1_generic_string_ref.html#a8953a29062e23c7c6bd11a3464bca1de">rapidjson::GenericStringRef&lt; CharType &gt;</a>
+</li>
 <li>GenericValue()
-: <a class="el" href="classrapidjson_1_1_generic_value.html#a3561f9bb69125f727915fa65859a5c5a">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
+: <a class="el" href="classrapidjson_1_1_generic_value.html#a1141a1bdda2b16a38769e9fd170b023a">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
 </li>
 <li>GetAllocator()
 : <a class="el" href="classrapidjson_1_1_generic_document.html#ab7c160e20a34a99a8576fc5d69c2def4">rapidjson::GenericDocument&lt; Encoding, Allocator &gt;</a>
+</li>
+<li>GetBool()
+: <a class="el" href="classrapidjson_1_1_generic_value.html#a69d917b47799f63fc588bf294fa71483">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
 </li>
 <li>GetDoublePrecision()
 : <a class="el" href="classrapidjson_1_1_writer.html#ae10a165f6ee2d7099e82c9ae7eb98e08">rapidjson::Writer&lt; OutputStream, SourceEncoding, TargetEncoding, Allocator &gt;</a>
@@ -235,6 +242,13 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </ul>
 
 
+<h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
+<li>length
+: <a class="el" href="structrapidjson_1_1_generic_string_ref.html#ae223535ec20edf0c1db44a40b7735111">rapidjson::GenericStringRef&lt; CharType &gt;</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
 <li>Malloc()
 : <a class="el" href="classrapidjson_1_1_memory_pool_allocator.html#a208c29e04b1d748bfe068444b7044344">rapidjson::MemoryPoolAllocator&lt; BaseAllocator &gt;</a>
@@ -243,7 +257,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classrapidjson_1_1_generic_value.html#a0220ddebe2f023fa75b643a50e90e559">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
 </li>
 <li>MemberBegin()
-: <a class="el" href="classrapidjson_1_1_generic_value.html#a469c0cc3e72f846757fb64fa52fafee5">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
+: <a class="el" href="classrapidjson_1_1_generic_value.html#a93f0f317f397c36a24a0f3c32648623a">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
 </li>
 <li>MemberEnd()
 : <a class="el" href="classrapidjson_1_1_generic_value.html#a88d2c5b861cd8a6a14976456dfbc1f64">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
@@ -253,6 +267,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>MemoryPoolAllocator()
 : <a class="el" href="classrapidjson_1_1_memory_pool_allocator.html#a59d783f4feba17dcd35d9f25fcbc09f4">rapidjson::MemoryPoolAllocator&lt; BaseAllocator &gt;</a>
+</li>
+<li>Move()
+: <a class="el" href="classrapidjson_1_1_generic_value.html#a5362747c1d3fa9d843fdd4089cf4b092">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
 </li>
 </ul>
 
@@ -268,6 +285,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 
 
 <h3><a class="anchor" id="index_o"></a>- o -</h3><ul>
+<li>operator const Ch *()
+: <a class="el" href="structrapidjson_1_1_generic_string_ref.html#af535787e3593802222f7b3f3096beff0">rapidjson::GenericStringRef&lt; CharType &gt;</a>
+</li>
 <li>operator-()
 : <a class="el" href="classrapidjson_1_1_generic_member_iterator.html#ad13508f46ee9db2dd81576ebd0de7b72">rapidjson::GenericMemberIterator&lt; Const, Encoding, Allocator &gt;</a>
 </li>
@@ -275,7 +295,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classrapidjson_1_1_generic_value.html#a3fb70e8c00c895212e477514491da90c">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
 </li>
 <li>operator[]()
-: <a class="el" href="classrapidjson_1_1_generic_value.html#add08e21cc707a93e42a68ade2c23d1f4">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
+: <a class="el" href="classrapidjson_1_1_generic_value.html#adc312de070d03a63e6c692c9c61db156">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
 </li>
 </ul>
 
@@ -286,10 +306,10 @@ $(document).ready(function(){initNavTree('functions.html','');});
 , <a class="el" href="classrapidjson_1_1_generic_reader.html#a111720aadb01b4e464e4cf79e2f3b37e">rapidjson::GenericReader&lt; SourceEncoding, TargetEncoding, Allocator &gt;</a>
 </li>
 <li>ParseInsitu()
-: <a class="el" href="classrapidjson_1_1_generic_document.html#a2fd2ff8ec45d5d074b899a231c337e52">rapidjson::GenericDocument&lt; Encoding, Allocator &gt;</a>
+: <a class="el" href="classrapidjson_1_1_generic_document.html#a2ff22dfd062893f6d5cadf37f441a29a">rapidjson::GenericDocument&lt; Encoding, Allocator &gt;</a>
 </li>
 <li>ParseStream()
-: <a class="el" href="classrapidjson_1_1_generic_document.html#ae90cf46cd680995c90ab353fa8343322">rapidjson::GenericDocument&lt; Encoding, Allocator &gt;</a>
+: <a class="el" href="classrapidjson_1_1_generic_document.html#aaf77c5c76453b1a04e2df4658ff00757">rapidjson::GenericDocument&lt; Encoding, Allocator &gt;</a>
 </li>
 <li>Pointer
 : <a class="el" href="classrapidjson_1_1_generic_member_iterator.html#a17955e32a06f667c672b270e6a4d2195">rapidjson::GenericMemberIterator&lt; Const, Encoding, Allocator &gt;</a>
@@ -301,7 +321,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classrapidjson_1_1_pretty_writer.html#af6725eb824750e8c66fe47fa4375cf9a">rapidjson::PrettyWriter&lt; OutputStream, SourceEncoding, TargetEncoding, Allocator &gt;</a>
 </li>
 <li>PushBack()
-: <a class="el" href="classrapidjson_1_1_generic_value.html#a0ec9f34bef5890241d4bc882b73b1db4">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
+: <a class="el" href="classrapidjson_1_1_generic_value.html#aa59273e0adfe2a9d0e6ac29d2537d9ed">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
 </li>
 </ul>
 
@@ -314,7 +334,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classrapidjson_1_1_generic_member_iterator.html#a915a1b6f0a0bbe6a1df69571a789e348">rapidjson::GenericMemberIterator&lt; Const, Encoding, Allocator &gt;</a>
 </li>
 <li>RemoveMember()
-: <a class="el" href="classrapidjson_1_1_generic_value.html#aa60074f72a6d1651828a104b0c6387b1">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
+: <a class="el" href="classrapidjson_1_1_generic_value.html#af91573ce61d798f0bc5dc88b00742697">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
 </li>
 <li>Reserve()
 : <a class="el" href="classrapidjson_1_1_generic_value.html#a17971ba2bcd4eb1716098fdfe9182386">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
@@ -323,8 +343,14 @@ $(document).ready(function(){initNavTree('functions.html','');});
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>s
+: <a class="el" href="structrapidjson_1_1_generic_string_ref.html#a001276ee57cbcbd3c14449045c71e994">rapidjson::GenericStringRef&lt; CharType &gt;</a>
+</li>
 <li>SetArray()
 : <a class="el" href="classrapidjson_1_1_generic_value.html#a25069c76d045b058e54835d8c467c789">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
+</li>
+<li>SetBool()
+: <a class="el" href="classrapidjson_1_1_generic_value.html#a5623c9039977ca0daf394e5c12f10c2d">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
 </li>
 <li>SetDoublePrecision()
 : <a class="el" href="classrapidjson_1_1_pretty_writer.html#ab73f802bc25a04681778fc1a0dd15fbf">rapidjson::PrettyWriter&lt; OutputStream, SourceEncoding, TargetEncoding, Allocator &gt;</a>
@@ -349,6 +375,12 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>String()
 : <a class="el" href="classrapidjson_1_1_pretty_writer.html#adf3c40ce77ef9c89e270c42e3f30926a">rapidjson::PrettyWriter&lt; OutputStream, SourceEncoding, TargetEncoding, Allocator &gt;</a>
 , <a class="el" href="classrapidjson_1_1_writer.html#a01c8cdaedaa05a61729a5d64adc4f980">rapidjson::Writer&lt; OutputStream, SourceEncoding, TargetEncoding, Allocator &gt;</a>
+</li>
+<li>StringRef()
+: <a class="el" href="structrapidjson_1_1_generic_string_ref.html#a578c51ab574a50a9c760b9da7c7562f2">rapidjson::GenericStringRef&lt; CharType &gt;</a>
+</li>
+<li>StringRefType
+: <a class="el" href="classrapidjson_1_1_generic_value.html#a559eb9cea54364a35518b02f6d74f379">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>
 </li>
 <li>Swap()
 : <a class="el" href="classrapidjson_1_1_generic_value.html#a8e7c85b91b5ae7d4506dbf23ca4605fc">rapidjson::GenericValue&lt; Encoding, Allocator &gt;</a>

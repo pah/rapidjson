@@ -10,6 +10,6 @@ var searchData=
   ['popback',['PopBack',['../classrapidjson_1_1_generic_value.html#ae475f31fb851138ced40e2ff6cb43ca6',1,'rapidjson::GenericValue']]],
   ['prettywriter',['PrettyWriter',['../classrapidjson_1_1_pretty_writer.html#af6725eb824750e8c66fe47fa4375cf9a',1,'rapidjson::PrettyWriter']]],
   ['prettywriter',['PrettyWriter',['../classrapidjson_1_1_pretty_writer.html',1,'rapidjson']]],
-  ['pushback',['PushBack',['../classrapidjson_1_1_generic_value.html#a0ec9f34bef5890241d4bc882b73b1db4',1,'rapidjson::GenericValue']]],
+  ['pushback',['PushBack',['../classrapidjson_1_1_generic_value.html#a0ec9f34bef5890241d4bc882b73b1db4',1,'rapidjson::GenericValue::PushBack(GenericValue &amp;value, Allocator &amp;allocator)'],['../classrapidjson_1_1_generic_value.html#a41946915cb219a684f6ffc9341efee22',1,'rapidjson::GenericValue::PushBack(StringRefType value, Allocator &amp;allocator)'],['../classrapidjson_1_1_generic_value.html#aa59273e0adfe2a9d0e6ac29d2537d9ed',1,'rapidjson::GenericValue::PushBack(T value, Allocator &amp;allocator)']]],
   ['putn',['PutN',['../namespacerapidjson.html#a1ac13bac5976fc06587e00fc0bcfb32a',1,'rapidjson::PutN(FileWriteStream &amp;stream, char c, size_t n)'],['../namespacerapidjson.html#a1d49d2cab617858b53a1db23b1759f43',1,'rapidjson::PutN(Stream &amp;stream, Ch c, size_t n)'],['../namespacerapidjson.html#a9d43be9c033dc49738b713fe6fbafecf',1,'rapidjson::PutN(GenericStringBuffer&lt; UTF8&lt;&gt; &gt; &amp;stream, char c, size_t n)']]]
 ];
