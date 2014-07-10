@@ -64,7 +64,7 @@ solution "test"
 		defines { "_CRT_SECURE_NO_WARNINGS" }
 		
 	configuration "gmake"
-		buildoptions "-msse4.2 -Werror=cast-qual"
+		buildoptions "-msse4.2 -Werror -Wall -Wextra -Wswitch-default"
 
 	project "gtest"
 		kind "StaticLib"
@@ -86,6 +86,10 @@ solution "test"
 	project "unittest"
 		kind "ConsoleApp"
 		
+		if _ACTION == "gmake" then
+			buildoptions "-Weffc++"
+		end
+
 		files { 
 			"../include/**.h",
 			"../test/unittest/**.cpp",
@@ -150,7 +154,7 @@ solution "example"
 		defines { "_CRT_SECURE_NO_WARNINGS" }
 
 	configuration "gmake"
- 		buildoptions "-Weverything"
+		buildoptions "-Werror -Wall -Wextra -Weffc++ -Wswitch-default"
 
 	project "condense"
 		kind "ConsoleApp"
@@ -175,4 +179,9 @@ solution "example"
 	project "serialize"
 		kind "ConsoleApp"
 		files "../example/serialize/*"
+		setTargetObjDir("../bin")
+
+	project "simpledom"
+		kind "ConsoleApp"
+		files "../example/simpledom/*"
 		setTargetObjDir("../bin")

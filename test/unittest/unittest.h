@@ -1,13 +1,30 @@
 #ifndef UNITTEST_H_
 #define UNITTEST_H_
 
+
+// gtest indirectly included inttypes.h, without __STDC_CONSTANT_MACROS.
+#ifndef __STDC_CONSTANT_MACROS
+#  define __STDC_CONSTANT_MACROS 1 // required by C++ standard
+#endif
+
 #ifdef _MSC_VER
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #pragma warning(disable : 4996) // 'function': was declared deprecated
 #endif
 
+#if defined(__clang__) || defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2))
+#if defined(__clang__) || (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
+#pragma GCC diagnostic push
+#endif
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
+
 #include "gtest/gtest.h"
+
+#if defined(__clang__) || defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
+#pragma GCC diagnostic pop
+#endif
 
 template <typename Ch>
 inline size_t StrLen(const Ch* s) {
@@ -31,7 +48,7 @@ inline Ch* StrDup(const Ch* str) {
 }
 
 inline void TempFilename(char *filename) {
-	tmpnam(filename);
+	filename = tmpnam(filename);
 
 	// For Visual Studio, tmpnam() adds a backslash in front. Remove it.
 	if (filename[0] == '\\')

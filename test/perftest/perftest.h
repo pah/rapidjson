@@ -24,7 +24,23 @@
 
 #ifdef __cplusplus
 
+// gtest indirectly included inttypes.h, without __STDC_CONSTANT_MACROS.
+#ifndef __STDC_CONSTANT_MACROS
+#  define __STDC_CONSTANT_MACROS 1 // required by C++ standard
+#endif
+
+#if defined(__clang__) || defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2))
+#if defined(__clang__) || (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
+#pragma GCC diagnostic push
+#endif
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
+
 #include "gtest/gtest.h"
+
+#if defined(__clang__) || defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
+#pragma GCC diagnostic pop
+#endif
 
 #ifdef _MSC_VER
 #define _CRTDBG_MAP_ALLOC
@@ -35,6 +51,8 @@
 //! Base class for all performance tests
 class PerfTest : public ::testing::Test {
 public:
+	PerfTest() : filename_(), json_(), length_(), whitespace_(), whitespace_length_() {}
+
 	virtual void SetUp() {
 		FILE *fp = fopen(filename_ = "data/sample.json", "rb");
 		if (!fp) 
@@ -68,7 +86,13 @@ public:
 	virtual void TearDown() {
 		free(json_);
 		free(whitespace_);
+		json_ = 0;
+		whitespace_ = 0;
 	}
+
+private:
+	PerfTest(const PerfTest&);
+	PerfTest& operator=(const PerfTest&);
 
 protected:
 	const char* filename_;

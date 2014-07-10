@@ -21,6 +21,8 @@ using namespace rapidjson;
 
 class RapidJson : public PerfTest {
 public:
+	RapidJson() : temp_(), doc_() {}
+
 	virtual void SetUp() {
 		PerfTest::SetUp();
 
@@ -28,13 +30,17 @@ public:
 		temp_ = (char *)malloc(length_ + 1);
 
 		// Parse as a document
-		EXPECT_FALSE(doc_.Parse<0>(json_).IsNull());
+		EXPECT_FALSE(doc_.Parse(json_).IsNull());
 	}
 
 	virtual void TearDown() {
 		PerfTest::TearDown();
 		free(temp_);
 	}
+
+private:
+	RapidJson(const RapidJson&);
+	RapidJson& operator=(const RapidJson&);
 
 protected:
 	char *temp_;
@@ -66,7 +72,7 @@ TEST_F(RapidJson, SIMD_SUFFIX(ReaderParse_DummyHandler)) {
 		StringStream s(json_);
 		BaseReaderHandler<> h;
 		Reader reader;
-		EXPECT_TRUE(reader.Parse<0>(s, h));
+		EXPECT_TRUE(reader.Parse(s, h));
 	}
 }
 
@@ -79,7 +85,7 @@ TEST_F(RapidJson, SIMD_SUFFIX(ReaderParse_DummyHandler_ValidateEncoding)) {
 	}
 }
 
-TEST_F(RapidJson, SIMD_SUFFIX(DoucmentParseInsitu_MemoryPoolAllocator)) {
+TEST_F(RapidJson, SIMD_SUFFIX(DocumentParseInsitu_MemoryPoolAllocator)) {
 	//const size_t userBufferSize = 128 * 1024;
 	//char* userBuffer = (char*)malloc(userBufferSize);
 
@@ -88,7 +94,7 @@ TEST_F(RapidJson, SIMD_SUFFIX(DoucmentParseInsitu_MemoryPoolAllocator)) {
 		//MemoryPoolAllocator<> allocator(userBuffer, userBufferSize);
 		//Document doc(&allocator);
 		Document doc;
-		doc.ParseInsitu<0>(temp_);
+		doc.ParseInsitu(temp_);
 		ASSERT_TRUE(doc.IsObject());
 		//if (i == 0) {
 		//	size_t size = doc.GetAllocator().Size();
@@ -102,7 +108,7 @@ TEST_F(RapidJson, SIMD_SUFFIX(DoucmentParseInsitu_MemoryPoolAllocator)) {
 	//free(userBuffer);
 }
 
-TEST_F(RapidJson, SIMD_SUFFIX(DoucmentParse_MemoryPoolAllocator)) {
+TEST_F(RapidJson, SIMD_SUFFIX(DocumentParse_MemoryPoolAllocator)) {
 	//const size_t userBufferSize = 128 * 1024;
 	//char* userBuffer = (char*)malloc(userBufferSize);
 
@@ -110,7 +116,7 @@ TEST_F(RapidJson, SIMD_SUFFIX(DoucmentParse_MemoryPoolAllocator)) {
 		//MemoryPoolAllocator<> allocator(userBuffer, userBufferSize);
 		//Document doc(&allocator);
 		Document doc;
-		doc.Parse<0>(json_);
+		doc.Parse(json_);
 		ASSERT_TRUE(doc.IsObject());
 		//if (i == 0) {
 		//	size_t size = doc.GetAllocator().Size();
@@ -124,11 +130,11 @@ TEST_F(RapidJson, SIMD_SUFFIX(DoucmentParse_MemoryPoolAllocator)) {
 	//free(userBuffer);
 }
 
-TEST_F(RapidJson, SIMD_SUFFIX(DoucmentParse_CrtAllocator)) {
+TEST_F(RapidJson, SIMD_SUFFIX(DocumentParse_CrtAllocator)) {
 	for (size_t i = 0; i < kTrialCount; i++) {
 		memcpy(temp_, json_, length_ + 1);
 		GenericDocument<UTF8<>, CrtAllocator> doc;
-		doc.Parse<0>(temp_);
+		doc.Parse(temp_);
 		ASSERT_TRUE(doc.IsObject());
 	}
 }
@@ -165,6 +171,11 @@ TEST_F(RapidJson, DocumentTraverse) {
 	}
 }
 
+#ifdef __GNUC__
+RAPIDJSON_DIAG_PUSH
+RAPIDJSON_DIAG_OFF(effc++)
+#endif
+
 struct ValueCounter : public BaseReaderHandler<> {
 	ValueCounter() : count_(1) {}	// root
 
@@ -173,6 +184,10 @@ struct ValueCounter : public BaseReaderHandler<> {
 
 	SizeType count_;
 };
+
+#ifdef __GNUC__
+RAPIDJSON_DIAG_POP
+#endif
 
 TEST_F(RapidJson, DocumentAccept) {
 	for (size_t i = 0; i < kTrialCount; i++) {
@@ -234,7 +249,7 @@ TEST_F(RapidJson, internal_Pow10) {
 TEST_F(RapidJson, SIMD_SUFFIX(Whitespace)) {
 	for (size_t i = 0; i < kTrialCount; i++) {
 		Document doc;
-		ASSERT_TRUE(doc.Parse<0>(whitespace_).IsArray());
+		ASSERT_TRUE(doc.Parse(whitespace_).IsArray());
 	}		
 }
 
@@ -279,7 +294,7 @@ TEST_F(RapidJson, SIMD_SUFFIX(ReaderParse_DummyHandler_FileReadStream)) {
 		FileReadStream s(fp, buffer, sizeof(buffer));
 		BaseReaderHandler<> h;
 		Reader reader;
-		reader.Parse<0>(s, h);
+		reader.Parse(s, h);
 		fclose(fp);
 	}
 }
