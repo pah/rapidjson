@@ -179,8 +179,8 @@ RAPIDJSON_DIAG_OFF(effc++)
 struct ValueCounter : public BaseReaderHandler<> {
 	ValueCounter() : count_(1) {}	// root
 
-	void EndObject(SizeType memberCount) { count_ += memberCount * 2; }
-	void EndArray(SizeType elementCount) { count_ += elementCount; }
+	bool EndObject(SizeType memberCount) { count_ += memberCount * 2; return true; }
+	bool EndArray(SizeType elementCount) { count_ += elementCount; return true; }
 
 	SizeType count_;
 };
@@ -242,7 +242,7 @@ TEST_F(RapidJson, PrettyWriter_StringBuffer) {
 TEST_F(RapidJson, internal_Pow10) {
 	double sum = 0;
 	for (size_t i = 0; i < kTrialCount * kTrialCount; i++)
-		sum += internal::Pow10(i & 255);
+		sum += internal::Pow10(int(i & 255));
 	EXPECT_GT(sum, 0.0);
 }
 

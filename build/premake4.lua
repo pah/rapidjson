@@ -64,7 +64,7 @@ solution "test"
 		defines { "_CRT_SECURE_NO_WARNINGS" }
 		
 	configuration "gmake"
-		buildoptions "-msse4.2 -Werror -Wall -Wextra -Wswitch-default"
+		buildoptions "-msse4.2 -Werror -Wall -Wextra"
 
 	project "gtest"
 		kind "StaticLib"
@@ -87,7 +87,7 @@ solution "test"
 		kind "ConsoleApp"
 		
 		if _ACTION == "gmake" then
-			buildoptions "-Weffc++"
+			buildoptions "-Weffc++ -Wswitch-default"
 		end
 
 		files { 
@@ -156,32 +156,10 @@ solution "example"
 	configuration "gmake"
 		buildoptions "-Werror -Wall -Wextra -Weffc++ -Wswitch-default"
 
-	project "condense"
-		kind "ConsoleApp"
-		files "../example/condense/*"
-		setTargetObjDir("../bin")
-
-	project "pretty"
-		kind "ConsoleApp"
-		files "../example/pretty/*"
-		setTargetObjDir("../bin")
-
-	project "prettyauto"
-		kind "ConsoleApp"
-		files "../example/prettyauto/*"
-		setTargetObjDir("../bin")
-
-	project "tutorial"
-		kind "ConsoleApp"
-		files "../example/tutorial/*"
-		setTargetObjDir("../bin")
-
-	project "serialize"
-		kind "ConsoleApp"
-		files "../example/serialize/*"
-		setTargetObjDir("../bin")
-
-	project "simpledom"
-		kind "ConsoleApp"
-		files "../example/simpledom/*"
-		setTargetObjDir("../bin")
+	local examplepaths = os.matchdirs("../example/*")
+	for _, examplepath in ipairs(examplepaths) do
+		project(path.getname(examplepath))
+			kind "ConsoleApp"
+			files(examplepath .. "/*")
+			setTargetObjDir("../bin")
+	end
