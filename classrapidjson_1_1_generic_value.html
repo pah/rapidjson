@@ -147,10 +147,10 @@ typedef const <a class="el" href="classrapidjson_1_1_generic_value.html">Generic
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac9787450c50b9ba3236de8c58d53df10"><td class="memTemplParams" colspan="2">template&lt;typename Handler &gt; </td></tr>
-<tr class="memitem:ac9787450c50b9ba3236de8c58d53df10"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classrapidjson_1_1_generic_value.html">GenericValue</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrapidjson_1_1_generic_value.html#ac9787450c50b9ba3236de8c58d53df10">Accept</a> (<a class="el" href="classrapidjson_1_1_handler.html">Handler</a> &amp;handler) const </td></tr>
-<tr class="memdesc:ac9787450c50b9ba3236de8c58d53df10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate events of this value to a <a class="el" href="classrapidjson_1_1_handler.html" title="Concept for receiving events from GenericReader upon parsing. ">Handler</a>.  <a href="#ac9787450c50b9ba3236de8c58d53df10">More...</a><br /></td></tr>
-<tr class="separator:ac9787450c50b9ba3236de8c58d53df10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeef0506cd1f8d703db4833c503f0657e"><td class="memTemplParams" colspan="2">template&lt;typename Handler &gt; </td></tr>
+<tr class="memitem:aeef0506cd1f8d703db4833c503f0657e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrapidjson_1_1_generic_value.html#aeef0506cd1f8d703db4833c503f0657e">Accept</a> (<a class="el" href="classrapidjson_1_1_handler.html">Handler</a> &amp;handler) const </td></tr>
+<tr class="memdesc:aeef0506cd1f8d703db4833c503f0657e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate events of this value to a <a class="el" href="classrapidjson_1_1_handler.html" title="Concept for receiving events from GenericReader upon parsing. The functions return true if no error o...">Handler</a>.  <a href="#aeef0506cd1f8d703db4833c503f0657e">More...</a><br /></td></tr>
+<tr class="separator:aeef0506cd1f8d703db4833c503f0657e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Assignment operators</div></td></tr>
 <tr class="memitem:a3fb70e8c00c895212e477514491da90c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrapidjson_1_1_generic_value.html">GenericValue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrapidjson_1_1_generic_value.html#a3fb70e8c00c895212e477514491da90c">operator=</a> (<a class="el" href="classrapidjson_1_1_generic_value.html">GenericValue</a> &amp;rhs)</td></tr>
 <tr class="memdesc:a3fb70e8c00c895212e477514491da90c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment with move semantics.  <a href="#a3fb70e8c00c895212e477514491da90c">More...</a><br /></td></tr>
@@ -631,7 +631,7 @@ template&lt;typename Encoding, typename Allocator&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ac9787450c50b9ba3236de8c58d53df10"></a>
+<a class="anchor" id="aeef0506cd1f8d703db4833c503f0657e"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -643,7 +643,7 @@ template&lt;typename Handler &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classrapidjson_1_1_generic_value.html">GenericValue</a>&amp; <a class="el" href="classrapidjson_1_1_generic_value.html">rapidjson::GenericValue</a>&lt; <a class="el" href="classrapidjson_1_1_encoding.html">Encoding</a>, <a class="el" href="classrapidjson_1_1_allocator.html">Allocator</a> &gt;::Accept </td>
+          <td class="memname">bool <a class="el" href="classrapidjson_1_1_generic_value.html">rapidjson::GenericValue</a>&lt; <a class="el" href="classrapidjson_1_1_encoding.html">Encoding</a>, <a class="el" href="classrapidjson_1_1_allocator.html">Allocator</a> &gt;::Accept </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classrapidjson_1_1_handler.html">Handler</a> &amp;&#160;</td>
           <td class="paramname"><em>handler</em></td><td>)</td>
@@ -657,16 +657,16 @@ template&lt;typename Handler &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Generate events of this value to a <a class="el" href="classrapidjson_1_1_handler.html" title="Concept for receiving events from GenericReader upon parsing. ">Handler</a>. </p>
-<p>This function adopts the GoF visitor pattern. Typical usage is to output this JSON value as JSON text via <a class="el" href="classrapidjson_1_1_writer.html" title="JSON writer. ">Writer</a>, which is a <a class="el" href="classrapidjson_1_1_handler.html" title="Concept for receiving events from GenericReader upon parsing. ">Handler</a>. It can also be used to deep clone this value via <a class="el" href="classrapidjson_1_1_generic_document.html" title="A document for parsing JSON text as DOM. ">GenericDocument</a>, which is also a <a class="el" href="classrapidjson_1_1_handler.html" title="Concept for receiving events from GenericReader upon parsing. ">Handler</a>. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+<p>Generate events of this value to a <a class="el" href="classrapidjson_1_1_handler.html" title="Concept for receiving events from GenericReader upon parsing. The functions return true if no error o...">Handler</a>. </p>
+<p>This function adopts the GoF visitor pattern. Typical usage is to output this JSON value as JSON text via <a class="el" href="classrapidjson_1_1_writer.html" title="JSON writer. ">Writer</a>, which is a <a class="el" href="classrapidjson_1_1_handler.html" title="Concept for receiving events from GenericReader upon parsing. The functions return true if no error o...">Handler</a>. It can also be used to deep clone this value via <a class="el" href="classrapidjson_1_1_generic_document.html" title="A document for parsing JSON text as DOM. ">GenericDocument</a>, which is also a <a class="el" href="classrapidjson_1_1_handler.html" title="Concept for receiving events from GenericReader upon parsing. The functions return true if no error o...">Handler</a>. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname"><a class="el" href="classrapidjson_1_1_handler.html" title="Concept for receiving events from GenericReader upon parsing. ">Handler</a></td><td>type of handler. </td></tr>
+    <tr><td class="paramname"><a class="el" href="classrapidjson_1_1_handler.html" title="Concept for receiving events from GenericReader upon parsing. The functions return true if no error o...">Handler</a></td><td>type of handler. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handler</td><td>An object implementing concept <a class="el" href="classrapidjson_1_1_handler.html" title="Concept for receiving events from GenericReader upon parsing. ">Handler</a>. </td></tr>
+    <tr><td class="paramname">handler</td><td>An object implementing concept <a class="el" href="classrapidjson_1_1_handler.html" title="Concept for receiving events from GenericReader upon parsing. The functions return true if no error o...">Handler</a>. </td></tr>
   </table>
   </dd>
 </dl>

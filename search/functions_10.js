@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['_7egenericvalue',['~GenericValue',['../classrapidjson_1_1_generic_value.html#a433a64b466c80cadf7d1acaa6f065437',1,'rapidjson::GenericValue']]],
-  ['_7ememorypoolallocator',['~MemoryPoolAllocator',['../classrapidjson_1_1_memory_pool_allocator.html#aa1d5b36c67611937e8ad6b2be53a483e',1,'rapidjson::MemoryPoolAllocator']]]
+  ['writedouble',['WriteDouble',['../classrapidjson_1_1_writer.html#a5128adb0e9385333266f33398beed55f',1,'rapidjson::Writer']]],
+  ['writer',['Writer',['../classrapidjson_1_1_writer.html#a08171b32315cb764f5073a99b1399a1c',1,'rapidjson::Writer']]]
 ];

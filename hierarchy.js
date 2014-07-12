@@ -29,6 +29,7 @@ var hierarchy =
     ] ],
     [ "rapidjson::Writer< OutputStream, SourceEncoding, TargetEncoding, Allocator >::Level", "structrapidjson_1_1_writer_1_1_level.html", null ],
     [ "rapidjson::MemoryPoolAllocator< BaseAllocator >", "classrapidjson_1_1_memory_pool_allocator.html", null ],
+    [ "rapidjson::ParseResult", "structrapidjson_1_1_parse_result.html", null ],
     [ "rapidjson::Stream", "classrapidjson_1_1_stream.html", null ],
     [ "rapidjson::StreamTraits< Stream >", "structrapidjson_1_1_stream_traits.html", null ],
     [ "rapidjson::StreamTraits< GenericInsituStringStream< Encoding > >", "structrapidjson_1_1_stream_traits_3_01_generic_insitu_string_stream_3_01_encoding_01_4_01_4.html", null ],

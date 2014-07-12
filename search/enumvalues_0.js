@@ -22,6 +22,7 @@ var searchData=
   ['kparseerrorstringmissquotationmark',['kParseErrorStringMissQuotationMark',['../namespacerapidjson.html#a7d3acf640886b1f2552dc8c4cd6dea60af7daa91caa53abb881ea231a874a4f40',1,'rapidjson']]],
   ['kparseerrorstringunicodeescapeinvalidhex',['kParseErrorStringUnicodeEscapeInvalidHex',['../namespacerapidjson.html#a7d3acf640886b1f2552dc8c4cd6dea60a23c38bf88b8448555c0eb41e1735bd92',1,'rapidjson']]],
   ['kparseerrorstringunicodesurrogateinvalid',['kParseErrorStringUnicodeSurrogateInvalid',['../namespacerapidjson.html#a7d3acf640886b1f2552dc8c4cd6dea60a636209a2e516fbdb4db5ad0a83a6b386',1,'rapidjson']]],
+  ['kparseerrortermination',['kParseErrorTermination',['../namespacerapidjson.html#a7d3acf640886b1f2552dc8c4cd6dea60ab250f87c3d8454c579364b5a0f697a50',1,'rapidjson']]],
   ['kparseerrorvalueinvalid',['kParseErrorValueInvalid',['../namespacerapidjson.html#a7d3acf640886b1f2552dc8c4cd6dea60ab7fa69bce0c393cf3a2b6065111f2f57',1,'rapidjson']]],
   ['kparseinsituflag',['kParseInsituFlag',['../namespacerapidjson.html#a81379eb4e94a0386d71d15fda882ebc9a02748971d6ea0c5e22c69b8aa7f344ea',1,'rapidjson']]],
   ['kparsevalidateencodingflag',['kParseValidateEncodingFlag',['../namespacerapidjson.html#a81379eb4e94a0386d71d15fda882ebc9a3df81f75479da8e052393f92cbec394b',1,'rapidjson']]],
