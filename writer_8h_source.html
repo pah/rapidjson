@@ -90,8 +90,8 @@ $(document).ready(function(){initNavTree('writer_8h_source.html','');});
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;new&gt;</span>      <span class="comment">// placement new</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#ifdef _MSC_VER</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#pragma warning(push)</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#pragma warning(disable : 4127) // conditional expression is constant</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;RAPIDJSON_DIAG_PUSH</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;RAPIDJSON_DIAG_OFF(4127) <span class="comment">// conditional expression is constant</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>rapidjson {</div>
@@ -267,7 +267,7 @@ $(document).ready(function(){initNavTree('writer_8h_source.html','');});
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="keywordtype">char</span> buffer[10];</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <span class="keywordtype">char</span> *p = buffer;</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <span class="keywordflow">do</span> {</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            *p++ = (u % 10) + <span class="charliteral">&#39;0&#39;</span>;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            *p++ = char(u % 10) + <span class="charliteral">&#39;0&#39;</span>;</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            u /= 10;</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        } <span class="keywordflow">while</span> (u &gt; 0);</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
@@ -388,7 +388,7 @@ $(document).ready(function(){initNavTree('writer_8h_source.html','');});
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;} <span class="comment">// namespace rapidjson</span></div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="preprocessor">#ifdef _MSC_VER</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="preprocessor">#pragma warning(pop)</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;RAPIDJSON_DIAG_POP</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="preprocessor">#endif // RAPIDJSON_RAPIDJSON_H_</span></div>
@@ -413,7 +413,7 @@ $(document).ready(function(){initNavTree('writer_8h_source.html','');});
 <div class="ttc" id="namespacerapidjson_html_ae79a4751c1c460ff0de5ecc07874f3e4ad6379da3dc04b83a591992bfb9fabba7"><div class="ttname"><a href="namespacerapidjson.html#ae79a4751c1c460ff0de5ecc07874f3e4ad6379da3dc04b83a591992bfb9fabba7">rapidjson::kStringType</a></div><div class="ttdoc">string </div><div class="ttdef"><b>Definition:</b> rapidjson.h:365</div></div>
 <div class="ttc" id="rapidjson_8h_html"><div class="ttname"><a href="rapidjson_8h.html">rapidjson.h</a></div><div class="ttdoc">common definitions and configuration </div></div>
 <div class="ttc" id="classrapidjson_1_1_allocator_html"><div class="ttname"><a href="classrapidjson_1_1_allocator.html">rapidjson::Allocator</a></div><div class="ttdoc">Concept for allocating, resizing and freeing memory block. </div></div>
-<div class="ttc" id="structrapidjson_1_1_transcoder_html_a3a1de7069d3cf7f1d4f4e2f96ceb7664"><div class="ttname"><a href="structrapidjson_1_1_transcoder.html#a3a1de7069d3cf7f1d4f4e2f96ceb7664">rapidjson::Transcoder::Transcode</a></div><div class="ttdeci">static RAPIDJSON_FORCEINLINE bool Transcode(InputStream &amp;is, OutputStream &amp;os)</div><div class="ttdoc">Take one Unicode codepoint from source encoding, convert it to target encoding and put it to the outp...</div><div class="ttdef"><b>Definition:</b> encodings.h:500</div></div>
+<div class="ttc" id="structrapidjson_1_1_transcoder_html_a3a1de7069d3cf7f1d4f4e2f96ceb7664"><div class="ttname"><a href="structrapidjson_1_1_transcoder.html#a3a1de7069d3cf7f1d4f4e2f96ceb7664">rapidjson::Transcoder::Transcode</a></div><div class="ttdeci">static RAPIDJSON_FORCEINLINE bool Transcode(InputStream &amp;is, OutputStream &amp;os)</div><div class="ttdoc">Take one Unicode codepoint from source encoding, convert it to target encoding and put it to the outp...</div><div class="ttdef"><b>Definition:</b> encodings.h:503</div></div>
 <div class="ttc" id="namespacerapidjson_html_ae79a4751c1c460ff0de5ecc07874f3e4abe572cb44ce198e467ccf9d63d50d82a"><div class="ttname"><a href="namespacerapidjson.html#ae79a4751c1c460ff0de5ecc07874f3e4abe572cb44ce198e467ccf9d63d50d82a">rapidjson::kNumberType</a></div><div class="ttdoc">number </div><div class="ttdef"><b>Definition:</b> rapidjson.h:366</div></div>
 <div class="ttc" id="classrapidjson_1_1_writer_html_a08171b32315cb764f5073a99b1399a1c"><div class="ttname"><a href="classrapidjson_1_1_writer.html#a08171b32315cb764f5073a99b1399a1c">rapidjson::Writer::Writer</a></div><div class="ttdeci">Writer(OutputStream &amp;os, Allocator *allocator=0, size_t levelDepth=kDefaultLevelDepth)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> writer.h:43</div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -422,6 +422,6 @@ $(document).ready(function(){initNavTree('writer_8h_source.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_2e777bb85672ca91d8484c1593fb1d89.html">include</a></li><li class="navelem"><a class="el" href="dir_0b07344794a20f8375311f92e90cd9a3.html">rapidjson</a></li><li class="navelem"><b>writer.h</b></li>
+    <li class="navelem"><a class="el" href="dir_e9b009e6f8d5a751e30d850d5f348a6a.html">include</a></li><li class="navelem"><a class="el" href="dir_fe05cb26b452ee8d781bbe53a5293186.html">rapidjson</a></li><li class="navelem"><b>writer.h</b></li>
   </ul>
 </div>
