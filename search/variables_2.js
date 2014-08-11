@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kneedfree',['kNeedFree',['../classrapidjson_1_1_memory_pool_allocator.html#a2606d96e19bcfc9d4bf58aefe55c1b29',1,'rapidjson::MemoryPoolAllocator']]]
+  ['head_5f',['head_',['../structrapidjson_1_1_generic_string_stream.html#a2556705b0a0fd6393862efe6db025b32',1,'rapidjson::GenericStringStream']]]
 ];

@@ -1,6 +1,7 @@
 var namespacerapidjson =
 [
     [ "Allocator", "classrapidjson_1_1_allocator.html", null ],
+    [ "ASCII", "structrapidjson_1_1_a_s_c_i_i.html", "structrapidjson_1_1_a_s_c_i_i" ],
     [ "AutoUTF", "structrapidjson_1_1_auto_u_t_f.html", "structrapidjson_1_1_auto_u_t_f" ],
     [ "AutoUTFInputStream", "classrapidjson_1_1_auto_u_t_f_input_stream.html", "classrapidjson_1_1_auto_u_t_f_input_stream" ],
     [ "AutoUTFOutputStream", "classrapidjson_1_1_auto_u_t_f_output_stream.html", "classrapidjson_1_1_auto_u_t_f_output_stream" ],
@@ -16,6 +17,7 @@ var namespacerapidjson =
     [ "GenericInsituStringStream", "structrapidjson_1_1_generic_insitu_string_stream.html", "structrapidjson_1_1_generic_insitu_string_stream" ],
     [ "GenericMember", "structrapidjson_1_1_generic_member.html", "structrapidjson_1_1_generic_member" ],
     [ "GenericMemberIterator", "classrapidjson_1_1_generic_member_iterator.html", "classrapidjson_1_1_generic_member_iterator" ],
+    [ "GenericMemoryBuffer", "structrapidjson_1_1_generic_memory_buffer.html", "structrapidjson_1_1_generic_memory_buffer" ],
     [ "GenericReader", "classrapidjson_1_1_generic_reader.html", "classrapidjson_1_1_generic_reader" ],
     [ "GenericStringBuffer", "structrapidjson_1_1_generic_string_buffer.html", "structrapidjson_1_1_generic_string_buffer" ],
     [ "GenericStringRef", "structrapidjson_1_1_generic_string_ref.html", "structrapidjson_1_1_generic_string_ref" ],
@@ -23,6 +25,7 @@ var namespacerapidjson =
     [ "GenericValue", "classrapidjson_1_1_generic_value.html", "classrapidjson_1_1_generic_value" ],
     [ "Handler", "classrapidjson_1_1_handler.html", null ],
     [ "MemoryPoolAllocator", "classrapidjson_1_1_memory_pool_allocator.html", "classrapidjson_1_1_memory_pool_allocator" ],
+    [ "MemoryStream", "structrapidjson_1_1_memory_stream.html", "structrapidjson_1_1_memory_stream" ],
     [ "ParseResult", "structrapidjson_1_1_parse_result.html", "structrapidjson_1_1_parse_result" ],
     [ "PrettyWriter", "classrapidjson_1_1_pretty_writer.html", "classrapidjson_1_1_pretty_writer" ],
     [ "Stream", "classrapidjson_1_1_stream.html", null ],

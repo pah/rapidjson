@@ -66,7 +66,7 @@ $(document).ready(function(){initNavTree('md_doc_tutorial.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -131,7 +131,7 @@ Query Value</h1>
 <img src="tutorial.png" alt="tutorial.png"/>
 <div class="caption">
 DOM in the tutorial</div></div>
-<p> The root of a conforming JSON should be either an object or an array. In this case, the root is an object. </p><div class="fragment"><div class="line">assert(document.IsObject());</div>
+<p> Since the update to RFC7159, the root of a conforming JSON document can be any JSON value. In RFC4627, only objects or arrays were allowed as root values. In this case, the root is an object. </p><div class="fragment"><div class="line">assert(document.IsObject());</div>
 </div><!-- fragment --><p>Query whether a <code>"hello"</code> member exists in the root object. Since a <code>Value</code> can contain different types of value, we may need to verify its type and use suitable API to obtain the value. In this example, <code>"hello"</code> member associates with a JSON string. </p><div class="fragment"><div class="line">assert(document.HasMember(<span class="stringliteral">&quot;hello&quot;</span>));</div>
 <div class="line">assert(document[<span class="stringliteral">&quot;hello&quot;</span>].IsString());</div>
 <div class="line">printf(<span class="stringliteral">&quot;hello = %s\n&quot;</span>, document[<span class="stringliteral">&quot;hello&quot;</span>].GetString());</div>
@@ -250,8 +250,16 @@ Query String</h2>
 </div><!-- fragment --><p> The correct length of the value <code>"a\\u0000b"</code> is 3. But <code>strlen()</code> returns 1.</p>
 <p><code>GetStringLength()</code> can also improve performance, as user may often need to call <code>strlen()</code> for allocating buffer.</p>
 <p>Besides, <code>std::string</code> also support a constructor:</p>
-<div class="fragment"><div class="line">string( <span class="keyword">const</span> <span class="keywordtype">char</span>* s, size_type count);</div>
+<div class="fragment"><div class="line">string(<span class="keyword">const</span> <span class="keywordtype">char</span>* s, <span class="keywordtype">size_t</span> count);</div>
 </div><!-- fragment --><p>which accepts the length of string as parameter. This constructor supports storing null character within the string, and should also provide better performance.</p>
+<h2>Comparing values</h2>
+<p>You can use <code>==</code> and <code>!=</code> to compare values. Two values are equal if and only if they are have same type and contents. You can also compare values with primitive types. Here is an example.</p>
+<div class="fragment"><div class="line"><span class="keywordflow">if</span> (document[<span class="stringliteral">&quot;hello&quot;</span>] == document[<span class="stringliteral">&quot;n&quot;</span>]) <span class="comment">/*...*/</span>;    <span class="comment">// Compare values</span></div>
+<div class="line"><span class="keywordflow">if</span> (document[<span class="stringliteral">&quot;hello&quot;</span>] == <span class="stringliteral">&quot;world&quot;</span>) <span class="comment">/*...*/</span>;          <span class="comment">// Compare value with literal string</span></div>
+<div class="line"><span class="keywordflow">if</span> (document[<span class="stringliteral">&quot;i&quot;</span>] != 123) <span class="comment">/*...*/</span>;                  <span class="comment">// Compare with integers</span></div>
+<div class="line"><span class="keywordflow">if</span> (document[<span class="stringliteral">&quot;pi&quot;</span>] != 3.14) <span class="comment">/*...*/</span>;                <span class="comment">// Compare with double.</span></div>
+</div><!-- fragment --><p>Array and object must be <code>Value</code>s in order to be compared. They are equal if and only if their whole subtrees are equal.</p>
+<p>Note that, currently if an object contains duplicated named member, comparing equality with any object is always <code>false</code>.</p>
 <h1><a class="anchor" id="CreateModifyValues"></a>
 Create/Modify Values</h1>
 <p>There are several ways to create values. After a DOM tree is created and/or modified, it can be saved as JSON again using <code>Writer</code>.</p>
@@ -362,6 +370,8 @@ Modify Array</h2>
 <li><code>Value&amp; PushBack(Value&amp;, Allocator&amp;)</code></li>
 <li><code>template &lt;typename T&gt; GenericValue&amp; PushBack(T, Allocator&amp;)</code></li>
 <li><code>Value&amp; PopBack()</code></li>
+<li><code>ValueIterator Erase(ConstValueIterator pos)</code></li>
+<li><code>ValueIterator Erase(ConstValueIterator first, ConstValueIterator last)</code></li>
 </ul>
 <p>Note that, <code>Reserve(...)</code> and <code>PushBack(...)</code> may allocate memory for the array elements, therefore require an allocator.</p>
 <p>Here is an example of <code>PushBack()</code>:</p>
@@ -384,12 +394,11 @@ Modify Array</h2>
 <div class="line">contact.PushBack(val, document.GetAllocator());</div>
 </div><!-- fragment --><h2><a class="anchor" id="ModifyObject"></a>
 Modify Object</h2>
-<p>Object is a collection of key-value pairs. Each key must be a string value. The way to manipulating object is to add/remove members:</p>
+<p>Object is a collection of key-value pairs. Each key must be a string value. The way to manipulating object is to add members:</p>
 <ul>
 <li><code>Value&amp; AddMember(Value&amp;, Value&amp;, Allocator&amp; allocator)</code></li>
 <li><code>Value&amp; AddMember(StringRefType, Value&amp;, Allocator&amp;)</code></li>
 <li><code>template &lt;typename T&gt; Value&amp; AddMember(StringRefType, T value, Allocator&amp;)</code></li>
-<li><code>bool RemoveMember(const Ch*)</code></li>
 </ul>
 <p>Here is an example.</p>
 <div class="fragment"><div class="line"><a class="code" href="namespacerapidjson.html#afb3fa116c66d834b6f4289d648cc8d6d">Value</a> contact(kObject);</div>
@@ -406,7 +415,16 @@ Modify Object</h2>
 <div class="line"><a class="code" href="namespacerapidjson.html#afb3fa116c66d834b6f4289d648cc8d6d">Value</a> key(<span class="stringliteral">&quot;key&quot;</span>, document.GetAllocator()); <span class="comment">// copy name string</span></div>
 <div class="line"><a class="code" href="namespacerapidjson.html#afb3fa116c66d834b6f4289d648cc8d6d">Value</a> val(42);                             <span class="comment">// some value</span></div>
 <div class="line">contact.AddMember(key, val, document.GetAllocator());</div>
-</div><!-- fragment --><h2><a class="anchor" id="DeepCopyValue"></a>
+</div><!-- fragment --><p>For removing members, there are several choices:</p>
+<ul>
+<li><code>bool RemoveMember(const Ch* name)</code>: Remove a member by search its name (linear time complexity).</li>
+<li><code>bool RemoveMember(const Value&amp; name)</code>: same as above but <code>name</code> is a Value.</li>
+<li><code>MemberIterator RemoveMember(MemberIterator)</code>: Remove a member by iterator (<em>constant</em> time complexity).</li>
+<li><code>MemberIterator EraseMember(MemberIterator)</code>: similar to the above but it preserves order of members (linear time complexity).</li>
+<li><code>MemberIterator EraseMember(MemberIterator first, MemberIterator last)</code>: remove a range of members, preserves order (linear time complexity).</li>
+</ul>
+<p><code>MemberIterator RemoveMember(MemberIterator)</code> uses a "move-last" trick to archive constant time complexity. Basically the member at iterator is destructed, and then the last element is moved to that position. So the order of the remaining members are changed.</p>
+<h2><a class="anchor" id="DeepCopyValue"></a>
 Deep Copy Value</h2>
 <p>If we really need to copy a DOM tree, we can use two APIs for deep copy: constructor with allocator, and <code>CopyFrom()</code>.</p>
 <div class="fragment"><div class="line"><a class="code" href="namespacerapidjson.html#a660c934c2959121babf799b6cb206659">Document</a> d;</div>
@@ -421,8 +439,8 @@ Deep Copy Value</h2>
 <div class="line"></div>
 <div class="line">v2.CopyFrom(d, a);                    <span class="comment">// copy whole document to v2</span></div>
 <div class="line">assert(d.IsArray() &amp;&amp; d.Size() == 2); <span class="comment">// d untouched</span></div>
-<div class="line">v1.SetObject().AddMember( <span class="stringliteral">&quot;array&quot;</span>, v2, a );</div>
-<div class="line">d.PushBack(v1,a);</div>
+<div class="line">v1.SetObject().AddMember(<span class="stringliteral">&quot;array&quot;</span>, v2, a);</div>
+<div class="line">d.PushBack(v1, a);</div>
 </div><!-- fragment --><h2><a class="anchor" id="SwapValues"></a>
 Swap Values</h2>
 <p><code>Swap()</code> is also provided.</p>
@@ -431,7 +449,7 @@ Swap Values</h2>
 <div class="line">a.Swap(b);</div>
 <div class="line">assert(a.IsString());</div>
 <div class="line">assert(b.IsInt());</div>
-</div><!-- fragment --><p>Swapping two DOM trees is fast (constant time), despite the complexity of the tress.</p>
+</div><!-- fragment --><p>Swapping two DOM trees is fast (constant time), despite the complexity of the trees.</p>
 <h1><a class="anchor" id="WhatsNext"></a>
 What's next</h1>
 <p>This tutorial shows the basics of DOM tree query and manipulation. There are several important concepts in RapidJSON:</p>

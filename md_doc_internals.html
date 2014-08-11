@@ -66,7 +66,7 @@ $(document).ready(function(){initNavTree('md_doc_internals.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -80,16 +80,160 @@ $(document).ready(function(){initNavTree('md_doc_internals.html','');});
 <div class="title">Internals </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#Value">Value</a><ul><li class="level2"><a href="#DataLayout">Data Layout</a></li>
+<li class="level2"><a href="#Flags">Flags</a></li>
+<li class="level2"><a href="#MemoryPoolAllocator">MemoryPoolAllocator</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#ParsingOptimization">Parsing Optimization</a><ul><li class="level2"><a href="#SkipwhitespaceWithSIMD">Skip Whitespace with SIMD</a></li>
+<li class="level2"><a href="#Pow10">Pow10()</a></li>
+<li class="level2"><a href="#LocalStreamCopy">Local Stream Copy</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#Parser">Parser</a><ul><li class="level2"><a href="#IterativeParser">Iterative Parser</a><ul><li class="level3"><a href="#IterativeParserGrammar">Grammar</a></li>
+<li class="level3"><a href="#IterativeParserParsingTable">Parsing Table</a></li>
+<li class="level3"><a href="#IterativeParserImplementation">Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="textblock"><p>This section records some design and implementation details.</p>
-<h1>Value</h1>
-<h2>Data Layout</h2>
-<h2>Flags</h2>
-<h1>Allocator</h1>
-<h2>MemoryPoolAllocator</h2>
-<h1>Parsing Optimization</h1>
-<h2>Skip Whitespace with SIMD</h2>
-<h2>Pow10()</h2>
-<h2>Local Stream Copy</h2>
+<h1><a class="anchor" id="Value"></a>
+Value</h1>
+<h2><a class="anchor" id="DataLayout"></a>
+Data Layout</h2>
+<h2><a class="anchor" id="Flags"></a>
+Flags</h2>
+<h1><a class="anchor" id="Allocator"></a>
+Allocator</h1>
+<h2><a class="anchor" id="MemoryPoolAllocator"></a>
+MemoryPoolAllocator</h2>
+<h1><a class="anchor" id="ParsingOptimization"></a>
+Parsing Optimization</h1>
+<h2><a class="anchor" id="SkipwhitespaceWithSIMD"></a>
+Skip Whitespace with SIMD</h2>
+<h2><a class="anchor" id="Pow10"></a>
+Pow10()</h2>
+<h2><a class="anchor" id="LocalStreamCopy"></a>
+Local Stream Copy</h2>
+<h1><a class="anchor" id="Parser"></a>
+Parser</h1>
+<h2><a class="anchor" id="IterativeParser"></a>
+Iterative Parser</h2>
+<p>The iterative parser is a recursive descent LL(1) parser implemented in a non-recursive manner.</p>
+<h3><a class="anchor" id="IterativeParserGrammar"></a>
+Grammar</h3>
+<p>The grammar used for this parser is based on strict JSON syntax: </p><div class="fragment"><div class="line">S -&gt; array | <span class="keywordtype">object</span></div>
+<div class="line">array -&gt; [ values ]</div>
+<div class="line"><span class="keywordtype">object</span> -&gt; { members }</div>
+<div class="line">values -&gt; non-empty-values | ε</div>
+<div class="line">non-empty-values -&gt; value addition-values</div>
+<div class="line">addition-values -&gt; ε | , non-empty-values</div>
+<div class="line">members -&gt; non-empty-members | ε</div>
+<div class="line">non-empty-members -&gt; member addition-members</div>
+<div class="line">addition-members -&gt; ε | , non-empty-members</div>
+<div class="line">member -&gt; STRING : value</div>
+<div class="line">value -&gt; STRING | NUMBER | NULL | BOOLEAN | <span class="keywordtype">object</span> | array</div>
+</div><!-- fragment --><p>Note that left factoring is applied to non-terminals <code>values</code> and <code>members</code> to make the grammar be LL(1).</p>
+<h3><a class="anchor" id="IterativeParserParsingTable"></a>
+Parsing Table</h3>
+<p>Based on the grammar, we can construct the FIRST and FOLLOW set.</p>
+<p>The FIRST set of non-terminals is listed below:</p>
+<table class="doxtable">
+<tr>
+<th align="center">NON-TERMINAL </th><th align="center">FIRST  </th></tr>
+<tr>
+<td align="center">array </td><td align="center">[ </td></tr>
+<tr>
+<td align="center">object </td><td align="center">{ </td></tr>
+<tr>
+<td align="center">values </td><td align="center">ε STRING NUMBER NULL BOOLEAN { [ </td></tr>
+<tr>
+<td align="center">addition-values </td><td align="center">ε COMMA </td></tr>
+<tr>
+<td align="center">members </td><td align="center">ε STRING </td></tr>
+<tr>
+<td align="center">addition-members </td><td align="center">ε COMMA </td></tr>
+<tr>
+<td align="center">member </td><td align="center">STRING </td></tr>
+<tr>
+<td align="center">value </td><td align="center">STRING NUMBER NULL BOOLEAN { [ </td></tr>
+<tr>
+<td align="center">S </td><td align="center">[ { </td></tr>
+<tr>
+<td align="center">non-empty-members </td><td align="center">STRING </td></tr>
+<tr>
+<td align="center">non-empty-values </td><td align="center">STRING NUMBER NULL BOOLEAN { [ </td></tr>
+</table>
+<p>The FOLLOW set is listed below:</p>
+<table class="doxtable">
+<tr>
+<th align="center">NON-TERMINAL </th><th align="center">FOLLOW  </th></tr>
+<tr>
+<td align="center">S </td><td align="center">$ </td></tr>
+<tr>
+<td align="center">array </td><td align="center">, $ } ] </td></tr>
+<tr>
+<td align="center">object </td><td align="center">, $ } ] </td></tr>
+<tr>
+<td align="center">values </td><td align="center">] </td></tr>
+<tr>
+<td align="center">non-empty-values </td><td align="center">] </td></tr>
+<tr>
+<td align="center">addition-values </td><td align="center">] </td></tr>
+<tr>
+<td align="center">members </td><td align="center">} </td></tr>
+<tr>
+<td align="center">non-empty-members </td><td align="center">} </td></tr>
+<tr>
+<td align="center">addition-members </td><td align="center">} </td></tr>
+<tr>
+<td align="center">member </td><td align="center">, } </td></tr>
+<tr>
+<td align="center">value </td><td align="center">, } ] </td></tr>
+</table>
+<p>Finally the parsing table can be constructed from FIRST and FOLLOW set:</p>
+<table class="doxtable">
+<tr>
+<th align="center">NON-TERMINAL </th><th align="center">[ </th><th align="center">{ </th><th align="center">, </th><th align="center">: </th><th align="center">] </th><th align="center">} </th><th align="center">STRING </th><th align="center">NUMBER </th><th align="center">NULL </th><th align="center">BOOLEAN  </th></tr>
+<tr>
+<td align="center">S </td><td align="center">array </td><td align="center">object </td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr>
+<tr>
+<td align="center">array </td><td align="center">[ values ] </td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr>
+<tr>
+<td align="center">object </td><td align="center"></td><td align="center">{ members } </td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr>
+<tr>
+<td align="center">values </td><td align="center">non-empty-values </td><td align="center">non-empty-values </td><td align="center"></td><td align="center"></td><td align="center">ε </td><td align="center"></td><td align="center">non-empty-values </td><td align="center">non-empty-values </td><td align="center">non-empty-values </td><td align="center">non-empty-values </td></tr>
+<tr>
+<td align="center">non-empty-values </td><td align="center">value addition-values </td><td align="center">value addition-values </td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center">value addition-values </td><td align="center">value addition-values </td><td align="center">value addition-values </td><td align="center">value addition-values </td></tr>
+<tr>
+<td align="center">addition-values </td><td align="center"></td><td align="center"></td><td align="center">, non-empty-values </td><td align="center"></td><td align="center">ε </td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr>
+<tr>
+<td align="center">members </td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center">ε </td><td align="center">non-empty-members </td><td align="center"></td><td align="center"></td><td align="center"></td></tr>
+<tr>
+<td align="center">non-empty-members </td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center">member addition-members </td><td align="center"></td><td align="center"></td><td align="center"></td></tr>
+<tr>
+<td align="center">addition-members </td><td align="center"></td><td align="center"></td><td align="center">, non-empty-members </td><td align="center"></td><td align="center"></td><td align="center">ε </td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr>
+<tr>
+<td align="center">member </td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center">STRING : value </td><td align="center"></td><td align="center"></td><td align="center"></td></tr>
+<tr>
+<td align="center">value </td><td align="center">array </td><td align="center">object </td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center">STRING </td><td align="center">NUMBER </td><td align="center">NULL </td><td align="center">BOOLEAN </td></tr>
+</table>
+<p>There is a great <a href="http://hackingoff.com/compilers/predict-first-follow-set">tool</a> for above grammar analysis.</p>
+<h3><a class="anchor" id="IterativeParserImplementation"></a>
+Implementation</h3>
+<p>Based on the parsing table, a direct(or conventional) implementation that pushes the production body in reverse order while generating a production could work.</p>
+<p>In RapidJSON, several modifications(or adaptations to current design) are made to a direct implementation.</p>
+<p>First, the parsing table is encoded in a state machine in RapidJSON. States are constructed by the head and body of production. State transitions are constructed by production rules. Besides, extra states are added for productions involved with <code>array</code> and <code>object</code>. In this way the generation of array values or object members would be a single state transition, rather than several pop/push operations in the direct implementation. This also makes the estimation of stack size more easier.</p>
+<p>The state diagram is shown as follows:</p>
+<div class="image">
+<img src="iterative-parser-states-diagram.png" alt="iterative-parser-states-diagram.png"/>
+<div class="caption">
+State Diagram</div></div>
+<p> Second, the iterative parser also keeps track of array's value count and object's member count in its internal stack, which may be different from a conventional implementation. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.7-->

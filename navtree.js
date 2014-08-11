@@ -44,7 +44,17 @@ var NAVTREE =
       ] ],
       [ "Summary", "md_doc_stream.html#Summary", null ]
     ] ],
-    [ "Encoding", "md_doc_encoding.html", null ],
+    [ "Encoding", "md_doc_encoding.html", [
+      [ "Unicode", "md_doc_encoding.html#Unicode", [
+        [ "Unicode Transformation Format", "md_doc_encoding.html#UTF", null ],
+        [ "Character Type", "md_doc_encoding.html#CharacterType", null ],
+        [ "AutoUTF", "md_doc_encoding.html#AutoUTF", null ],
+        [ "ASCII", "md_doc_encoding.html#ASCII", null ]
+      ] ],
+      [ "Validation & Transcoding", "md_doc_encoding.html#ValidationTranscoding", [
+        [ "Transcoder", "md_doc_encoding.html#Transcoder", null ]
+      ] ]
+    ] ],
     [ "DOM", "md_doc_dom.html", [
       [ "Template", "md_doc_dom.html#Template", [
         [ "Encoding", "md_doc_dom.html#Encoding", null ],
@@ -59,9 +69,38 @@ var NAVTREE =
         [ "User Buffer", "md_doc_dom.html#UserBuffer", null ]
       ] ]
     ] ],
-    [ "SAX", "md_doc_sax.html", null ],
+    [ "SAX", "md_doc_sax.html", [
+      [ "Reader", "md_doc_sax.html#Reader", [
+        [ "Handler", "md_doc_sax.html#Handler", null ],
+        [ "GenericReader", "md_doc_sax.html#GenericReader", null ]
+      ] ],
+      [ "Writer", "md_doc_sax.html#Writer", [
+        [ "PrettyWriter", "md_doc_sax.html#PrettyWriter", null ],
+        [ "Completeness and Reset", "md_doc_sax.html#CompletenessReset", null ],
+        [ "Parsing JSON to Custom Data Structure", "md_doc_sax.html#CustomDataStructure", null ],
+        [ "Filtering of JSON", "md_doc_sax.html#Filtering", null ]
+      ] ]
+    ] ],
     [ "Performance", "md_doc_performance.html", null ],
-    [ "Internals", "md_doc_internals.html", null ],
+    [ "Internals", "md_doc_internals.html", [
+      [ "Value", "md_doc_internals.html#Value", [
+        [ "Data Layout", "md_doc_internals.html#DataLayout", null ],
+        [ "Flags", "md_doc_internals.html#Flags", null ],
+        [ "MemoryPoolAllocator", "md_doc_internals.html#MemoryPoolAllocator", null ]
+      ] ],
+      [ "Parsing Optimization", "md_doc_internals.html#ParsingOptimization", [
+        [ "Skip Whitespace with SIMD", "md_doc_internals.html#SkipwhitespaceWithSIMD", null ],
+        [ "Pow10()", "md_doc_internals.html#Pow10", null ],
+        [ "Local Stream Copy", "md_doc_internals.html#LocalStreamCopy", null ]
+      ] ],
+      [ "Parser", "md_doc_internals.html#Parser", [
+        [ "Iterative Parser", "md_doc_internals.html#IterativeParser", [
+          [ "Grammar", "md_doc_internals.html#IterativeParserGrammar", null ],
+          [ "Parsing Table", "md_doc_internals.html#IterativeParserParsingTable", null ],
+          [ "Implementation", "md_doc_internals.html#IterativeParserImplementation", null ]
+        ] ]
+      ] ]
+    ] ],
     [ "FAQ", "md_doc_faq.html", null ],
     [ "Todo List", "todo.html", null ],
     [ "Namespace Members", "namespacemembers.html", [
@@ -78,7 +117,8 @@ var NAVTREE =
         [ "All", "functions.html", null ],
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ],
-        [ "Typedefs", "functions_type.html", null ]
+        [ "Typedefs", "functions_type.html", null ],
+        [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
     [ "Files", null, [
@@ -94,8 +134,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "allocators_8h_source.html",
-"classrapidjson_1_1_memory_pool_allocator.html#aa1d5b36c67611937e8ad6b2be53a483e",
-"structrapidjson_1_1_transcoder.html"
+"classrapidjson_1_1_generic_value.html#aec1c96c6af575bdb7d31423e543d2062",
+"structrapidjson_1_1_generic_insitu_string_stream.html#a5a17e183fec782bf9bc11d247ffbee73"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
