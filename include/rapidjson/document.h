@@ -21,6 +21,8 @@
 #ifndef RAPIDJSON_DOCUMENT_H_
 #define RAPIDJSON_DOCUMENT_H_
 
+/*! \file document.h */
+
 #include "reader.h"
 #include "internal/strfunc.h"
 #include <new>      // placement new
@@ -32,6 +34,26 @@ RAPIDJSON_DIAG_OFF(4127) // conditional expression is constant
 RAPIDJSON_DIAG_PUSH
 RAPIDJSON_DIAG_OFF(effc++)
 #endif
+
+///////////////////////////////////////////////////////////////////////////////
+// RAPIDJSON_HAS_STDSTRING
+
+#ifdef RAPIDJSON_DOXYGEN_RUNNING
+#define RAPIDJSON_HAS_STDSTRING 1 // force generation of documentation
+#endif
+#ifdef RAPIDJSON_HAS_STDSTRING
+/*! \def RAPIDJSON_HAS_STDSTRING
+    \ingroup RAPIDJSON_CONFIG
+    \brief Enable RapidJSON support for \c std::string
+
+    By defining this preprocessor symbol, several convenience functions for using
+    \ref rapidjson::GenericValue with \c std::string are enabled, especially
+    for construction and comparison.
+
+    \hideinitializer
+*/
+#include <string>
+#endif // RAPIDJSON_HAS_STDSTRING
 
 #ifndef RAPIDJSON_NOMEMBERITERATORCLASS
 #include "internal/meta.h"
@@ -55,6 +77,9 @@ struct GenericMember {
     GenericValue<Encoding, Allocator> name;     //!< name of member (must be a string)
     GenericValue<Encoding, Allocator> value;    //!< value of member.
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// GenericMemberIterator
 
 #ifndef RAPIDJSON_NOMEMBERITERATORCLASS
 
@@ -338,6 +363,25 @@ inline GenericStringRef<CharType> StringRef(const CharType* str, size_t length) 
     return GenericStringRef<CharType>(str, SizeType(length));
 }
 
+#ifdef RAPIDJSON_HAS_STDSTRING
+//! Mark a string object as constant string
+/*! Mark a string object (e.g. \c std::string) as a "string literal".
+    This function can be used to avoid copying a string to be referenced as a
+    value in a JSON GenericValue object, if the string's lifetime is known
+    to be valid long enough.
+
+    \tparam CharType character type of the string
+    \param str Constant string, lifetime assumed to be longer than the use of the string in e.g. a GenericValue
+    \return GenericStringRef string reference object
+    \relatesalso GenericStringRef
+    \note Requires the definition of the preprocessor symbol \ref RAPIDJSON_HAS_STDSTRING.
+*/
+template<typename CharType>
+inline GenericStringRef<CharType> StringRef(const std::basic_string<CharType>& str) {
+    return GenericStringRef<CharType>(str.data(), SizeType(str.size()));
+}
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 // GenericValue
 
@@ -469,6 +513,13 @@ public:
 
     //! Constructor for copy-string (i.e. do make a copy of string)
     GenericValue(const Ch*s, Allocator& allocator) : data_(), flags_() { SetStringRaw(StringRef(s), allocator); }
+
+#ifdef RAPIDJSON_HAS_STDSTRING
+    //! Constructor for copy-string from a string object (i.e. do make a copy of string)
+    /*! \note Requires the definition of the preprocessor symbol \ref RAPIDJSON_HAS_STDSTRING.
+     */
+    GenericValue(const std::basic_string<Ch>& s, Allocator& allocator) : data_(), flags_() { SetStringRaw(StringRef(s), allocator); }
+#endif
 
     //! Destructor.
     /*! Need to destruct elements of array, members of object, or copy-string.
@@ -619,28 +670,35 @@ public:
         }
     }
 
-    //! Not-equal-to operator
-    bool operator!=(const GenericValue& rhs) const { return !(*this == rhs); }
+    //! Equal-to operator with const C-string pointer
+    bool operator==(const Ch* rhs) const { return *this == GenericValue(StringRef(rhs)); }
 
-    //! (Not-)Equal-to operator with const C-string pointer.
-    friend bool operator==(const GenericValue& lhs, const Ch* rhs) { return lhs == GenericValue(StringRef(rhs)); }
-    friend bool operator!=(const GenericValue& lhs, const Ch* rhs) { return !(lhs == rhs); }
-    friend bool operator==(const Ch* lhs, const GenericValue& rhs) { return GenericValue(StringRef(lhs)) == rhs; }
-    friend bool operator!=(const Ch* lhs, const GenericValue& rhs) { return !(lhs == rhs); }
+#ifdef RAPIDJSON_HAS_STDSTRING
+    //! Equal-to operator with string object
+    /*! \note Requires the definition of the preprocessor symbol \ref RAPIDJSON_HAS_STDSTRING.
+     */
+    bool operator==(const std::basic_string<Ch>& rhs) const { return *this == GenericValue(StringRef(rhs)); }
+#endif
 
-    //! (Not-)Equal-to operator with non-const C-string pointer.
-    friend bool operator==(const GenericValue& lhs, Ch* rhs) { return lhs == GenericValue(StringRef(rhs)); }
-    friend bool operator!=(const GenericValue& lhs, Ch* rhs) { return !(lhs == rhs); }
-    friend bool operator==(Ch* lhs, const GenericValue& rhs) { return GenericValue(StringRef(lhs)) == rhs; }
-    friend bool operator!=(Ch* lhs, const GenericValue& rhs) { return !(lhs == rhs); }
-
-    //! (Not-)Equal-to operator with primitive types.
+    //! Equal-to operator with primitive types
     /*! \tparam T Either \ref Type, \c int, \c unsigned, \c int64_t, \c uint64_t, \c double, \c true, \c false
     */
-    template <typename T> friend bool operator==(const GenericValue& lhs, const T& rhs) { return lhs == GenericValue(rhs); }
-    template <typename T> friend bool operator!=(const GenericValue& lhs, const T& rhs) { return !(lhs == rhs); }
-    template <typename T> friend bool operator==(const T& lhs, const GenericValue& rhs) { return GenericValue(lhs) == rhs; }
-    template <typename T> friend bool operator!=(const T& lhs, const GenericValue& rhs) { return !(lhs == rhs); }
+    template <typename T> RAPIDJSON_DISABLEIF_RETURN(internal::IsPointer<T>, bool) operator==(const T& rhs) const { return *this == GenericValue(rhs); }
+
+    //! Not-equal-to operator with arbitrary types
+    /*! \return !(*this == rhs)
+     */
+    template <typename T> bool operator!=(const T& rhs) const { return !(*this == rhs); }
+
+    //! Equal-to operator with arbitrary types (symmetric version)
+    /*! \return (rhs == lhs)
+     */
+    template <typename T> friend bool operator==(const T& lhs, const GenericValue& rhs) { return rhs == lhs; }
+
+    //! Not-Equal-to operator with arbitrary types (symmetric version)
+    /*! \return !(rhs == lhs)
+     */
+    template <typename T> friend bool operator!=(const T& lhs, const GenericValue& rhs) { return !(rhs == lhs); }
     //@}
 
     //!@name Type
@@ -1207,6 +1265,17 @@ int z = a[0u].GetInt();             // This works too.
     */
     GenericValue& SetString(const Ch* s, Allocator& allocator) { return SetString(s, internal::StrLen(s), allocator); }
 
+#if RAPIDJSON_HAS_STDSTRING
+    //! Set this value as a string by copying from source string.
+    /*! \param s source string.
+        \param allocator Allocator for allocating copied buffer. Commonly use GenericDocument::GetAllocator().
+        \return The value itself for fluent API.
+        \post IsString() == true && GetString() != s.data() && strcmp(GetString(),s.data() == 0 && GetStringLength() == s.size()
+        \note Requires the definition of the preprocessor symbol \ref RAPIDJSON_HAS_STDSTRING.
+    */
+    GenericValue& SetString(const std::basic_string<Ch>& s, Allocator& allocator) { return SetString(s.data(), s.size(), allocator); }
+#endif
+
     //@}
 
     //! Generate events of this value to a Handler.
@@ -1259,7 +1328,7 @@ int z = a[0u].GetInt();             // This works too.
     }
 
 private:
-    template <typename, typename>
+    template <typename, typename, typename>
     friend class GenericDocument;
 
     enum {
@@ -1406,11 +1475,12 @@ typedef GenericValue<UTF8<> > Value;
 //! A document for parsing JSON text as DOM.
 /*!
     \note implements Handler concept
-    \tparam Encoding encoding for both parsing and string storage.
-    \tparam Allocator allocator for allocating memory for the DOM, and the stack during parsing.
-    \warning Although GenericDocument inherits from GenericValue, the API does \b not provide any virtual functions, especially no virtual destructors.  To avoid memory leaks, do not \c delete a GenericDocument object via a pointer to a GenericValue.
+    \tparam Encoding Encoding for both parsing and string storage.
+    \tparam Allocator Allocator for allocating memory for the DOM
+    \tparam StackAllocator Allocator for allocating memory for stack during parsing.
+    \warning Although GenericDocument inherits from GenericValue, the API does \b not provide any virtual functions, especially no virtual destructor.  To avoid memory leaks, do not \c delete a GenericDocument object via a pointer to a GenericValue.
 */
-template <typename Encoding, typename Allocator = MemoryPoolAllocator<> >
+template <typename Encoding, typename Allocator = MemoryPoolAllocator<>, typename StackAllocator = CrtAllocator>
 class GenericDocument : public GenericValue<Encoding, Allocator> {
 public:
     typedef typename Encoding::Ch Ch;                       //!< Character type derived from Encoding.
@@ -1418,10 +1488,20 @@ public:
     typedef Allocator AllocatorType;                        //!< Allocator type from template parameter.
 
     //! Constructor
-    /*! \param allocator        Optional allocator for allocating stack memory.
-        \param stackCapacity    Initial capacity of stack in bytes.
+    /*! \param allocator        Optional allocator for allocating memory.
+        \param stackCapacity    Optional initial capacity of stack in bytes.
+        \param stackAllocator   Optional allocator for allocating memory for stack.
     */
-    GenericDocument(Allocator* allocator = 0, size_t stackCapacity = kDefaultStackCapacity) : stack_(allocator, stackCapacity), parseResult_() {}
+    GenericDocument(Allocator* allocator = 0, size_t stackCapacity = kDefaultStackCapacity, StackAllocator* stackAllocator = 0) : 
+        allocator_(allocator), ownAllocator_(0), stack_(stackAllocator, stackCapacity), parseResult_()
+    {
+        if (!allocator_)
+            ownAllocator_ = allocator_ = new Allocator();
+    }
+
+    ~GenericDocument() {
+        delete ownAllocator_;
+    }
 
     //!@name Parse from stream
     //!@{
@@ -1549,7 +1629,7 @@ public:
     //!@}
 
     //! Get the allocator of this document.
-    Allocator& GetAllocator() { return stack_.GetAllocator(); }
+    Allocator& GetAllocator() { return *allocator_; }
 
     //! Get the capacity of stack in bytes.
     size_t GetStackCapacity() const { return stack_.GetCapacity(); }
@@ -1612,10 +1692,13 @@ private:
                 (stack_.template Pop<ValueType>(1))->~ValueType();
         else
             stack_.Clear();
+        stack_.ShrinkToFit();
     }
 
     static const size_t kDefaultStackCapacity = 1024;
-    internal::Stack<Allocator> stack_;
+    Allocator* allocator_;
+    Allocator* ownAllocator_;
+    internal::Stack<StackAllocator> stack_;
     ParseResult parseResult_;
 };
 
