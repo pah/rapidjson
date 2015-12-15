@@ -1,22 +1,16 @@
-// Copyright (C) 2011 Milo Yip
+// Tencent is pleased to support the open source community by making RapidJSON available.
+// 
+// Copyright (C) 2015 THL A29 Limited, a Tencent company, and Milo Yip. All rights reserved.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Licensed under the MIT License (the "License"); you may not use this file except
+// in compliance with the License. You may obtain a copy of the License at
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+// http://opensource.org/licenses/MIT
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// Unless required by applicable law or agreed to in writing, software distributed 
+// under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+// CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+// specific language governing permissions and limitations under the License.
 
 #ifndef RAPIDJSON_WRITER_H_
 #define RAPIDJSON_WRITER_H_
@@ -29,12 +23,16 @@
 #include "stringbuffer.h"
 #include <new>      // placement new
 
+#if RAPIDJSON_HAS_STDSTRING
+#include <string>
+#endif
+
 #ifdef _MSC_VER
 RAPIDJSON_DIAG_PUSH
 RAPIDJSON_DIAG_OFF(4127) // conditional expression is constant
 #endif
 
-namespace rapidjson {
+RAPIDJSON_NAMESPACE_BEGIN
 
 //! JSON writer
 /*! Writer implements the concept Handler.
@@ -59,12 +57,14 @@ public:
 
     //! Constructor
     /*! \param os Output stream.
-        \param allocator User supplied allocator. If it is null, it will create a private one.
+        \param stackAllocator User supplied allocator. If it is null, it will create a private one.
         \param levelDepth Initial capacity of stack.
     */
+    explicit
     Writer(OutputStream& os, StackAllocator* stackAllocator = 0, size_t levelDepth = kDefaultLevelDepth) : 
         os_(&os), level_stack_(stackAllocator, levelDepth * sizeof(Level)), hasRoot_(false) {}
 
+    explicit
     Writer(StackAllocator* allocator = 0, size_t levelDepth = kDefaultLevelDepth) :
         os_(0), level_stack_(allocator, levelDepth * sizeof(Level)), hasRoot_(false) {}
 
@@ -125,12 +125,20 @@ public:
         return WriteString(str, length);
     }
 
+#if RAPIDJSON_HAS_STDSTRING
+    bool String(const std::basic_string<Ch>& str) {
+        return String(str.data(), SizeType(str.size()));
+    }
+#endif
+
     bool StartObject() {
         Prefix(kObjectType);
         new (level_stack_.template Push<Level>()) Level(false);
         return WriteStartObject();
     }
 
+    bool Key(const Ch* str, SizeType length, bool copy = false) { return String(str, length, copy); }
+	
     bool EndObject(SizeType memberCount = 0) {
         (void)memberCount;
         RAPIDJSON_ASSERT(level_stack_.GetSize() >= sizeof(Level));
@@ -165,6 +173,7 @@ public:
 
     //! Simpler but slower overload.
     bool String(const Ch* str) { return String(str, internal::StrLen(str)); }
+    bool Key(const Ch* str) { return Key(str, internal::StrLen(str)); }
 
     //@}
 
@@ -263,7 +272,8 @@ protected:
                     os_->Put(hexDigits[(codepoint >>  4) & 15]);
                     os_->Put(hexDigits[(codepoint      ) & 15]);
                 }
-                else if (codepoint >= 0x010000 && codepoint <= 0x10FFFF)    {
+                else {
+                    RAPIDJSON_ASSERT(codepoint >= 0x010000 && codepoint <= 0x10FFFF);
                     // Surrogate pair
                     unsigned s = codepoint - 0x010000;
                     unsigned lead = (s >> 10) + 0xD800;
@@ -279,8 +289,6 @@ protected:
                     os_->Put(hexDigits[(trail >>  4) & 15]);
                     os_->Put(hexDigits[(trail      ) & 15]);                    
                 }
-                else
-                    return false;   // invalid code point
             }
             else if ((sizeof(Ch) == 1 || (unsigned)c < 256) && escape[(unsigned char)c])  {
                 is.Take();
@@ -294,7 +302,8 @@ protected:
                 }
             }
             else
-                Transcoder<SourceEncoding, TargetEncoding>::Transcode(is, *os_);
+                if (!Transcoder<SourceEncoding, TargetEncoding>::Transcode(is, *os_))
+                    return false;
         }
         os_->Put('\"');
         return true;
@@ -341,7 +350,7 @@ template<>
 inline bool Writer<StringBuffer>::WriteInt(int i) {
     char *buffer = os_->Push(11);
     const char* end = internal::i32toa(i, buffer);
-    os_->Pop(11 - (end - buffer));
+    os_->Pop(static_cast<size_t>(11 - (end - buffer)));
     return true;
 }
 
@@ -349,7 +358,7 @@ template<>
 inline bool Writer<StringBuffer>::WriteUint(unsigned u) {
     char *buffer = os_->Push(10);
     const char* end = internal::u32toa(u, buffer);
-    os_->Pop(10 - (end - buffer));
+    os_->Pop(static_cast<size_t>(10 - (end - buffer)));
     return true;
 }
 
@@ -357,7 +366,7 @@ template<>
 inline bool Writer<StringBuffer>::WriteInt64(int64_t i64) {
     char *buffer = os_->Push(21);
     const char* end = internal::i64toa(i64, buffer);
-    os_->Pop(21 - (end - buffer));
+    os_->Pop(static_cast<size_t>(21 - (end - buffer)));
     return true;
 }
 
@@ -365,7 +374,7 @@ template<>
 inline bool Writer<StringBuffer>::WriteUint64(uint64_t u) {
     char *buffer = os_->Push(20);
     const char* end = internal::u64toa(u, buffer);
-    os_->Pop(20 - (end - buffer));
+    os_->Pop(static_cast<size_t>(20 - (end - buffer)));
     return true;
 }
 
@@ -373,11 +382,11 @@ template<>
 inline bool Writer<StringBuffer>::WriteDouble(double d) {
     char *buffer = os_->Push(25);
     char* end = internal::dtoa(d, buffer);
-    os_->Pop(25 - (end - buffer));
+    os_->Pop(static_cast<size_t>(25 - (end - buffer)));
     return true;
 }
 
-} // namespace rapidjson
+RAPIDJSON_NAMESPACE_END
 
 #ifdef _MSC_VER
 RAPIDJSON_DIAG_POP

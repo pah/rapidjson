@@ -1,22 +1,16 @@
-// Copyright (C) 2011 Milo Yip
+// Tencent is pleased to support the open source community by making RapidJSON available.
+// 
+// Copyright (C) 2015 THL A29 Limited, a Tencent company, and Milo Yip. All rights reserved.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Licensed under the MIT License (the "License"); you may not use this file except
+// in compliance with the License. You may obtain a copy of the License at
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+// http://opensource.org/licenses/MIT
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// Unless required by applicable law or agreed to in writing, software distributed 
+// under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+// CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+// specific language governing permissions and limitations under the License.
 
 #include "unittest.h"
 #include "rapidjson/document.h"
@@ -24,7 +18,7 @@
 
 using namespace rapidjson;
 
-TEST(Value, default_constructor) {
+TEST(Value, DefaultConstructor) {
     Value x;
     EXPECT_EQ(kNullType, x.GetType());
     EXPECT_TRUE(x.IsNull());
@@ -38,7 +32,72 @@ TEST(Value, default_constructor) {
 //  Value y = x;
 //}
 
-TEST(Value, assignment_operator) {
+#if RAPIDJSON_HAS_CXX11_RVALUE_REFS
+
+#include <type_traits>
+
+TEST(Value, Traits) {
+    typedef GenericValue<UTF8<>, CrtAllocator> Value;
+    static_assert(std::is_constructible<Value>::value, "");
+    static_assert(std::is_default_constructible<Value>::value, "");
+#ifndef _MSC_VER
+    static_assert(!std::is_copy_constructible<Value>::value, "");
+#endif
+    static_assert(std::is_move_constructible<Value>::value, "");
+
+#ifndef _MSC_VER
+    static_assert(std::is_nothrow_constructible<Value>::value, "");
+    static_assert(std::is_nothrow_default_constructible<Value>::value, "");
+    static_assert(!std::is_nothrow_copy_constructible<Value>::value, "");
+    static_assert(std::is_nothrow_move_constructible<Value>::value, "");
+#endif
+
+    static_assert(std::is_assignable<Value,Value>::value, "");
+#ifndef _MSC_VER
+    static_assert(!std::is_copy_assignable<Value>::value, "");
+#endif
+    static_assert(std::is_move_assignable<Value>::value, "");
+
+#ifndef _MSC_VER
+    static_assert(std::is_nothrow_assignable<Value, Value>::value, "");
+#endif
+    static_assert(!std::is_nothrow_copy_assignable<Value>::value, "");
+#ifndef _MSC_VER
+    static_assert(std::is_nothrow_move_assignable<Value>::value, "");
+#endif
+
+    static_assert(std::is_destructible<Value>::value, "");
+#ifndef _MSC_VER
+    static_assert(std::is_nothrow_destructible<Value>::value, "");
+#endif
+}
+
+TEST(Value, MoveConstructor) {
+    typedef GenericValue<UTF8<>, CrtAllocator> Value;
+    Value::AllocatorType allocator;
+
+    Value x((Value(kArrayType)));
+    x.Reserve(4u, allocator);
+    x.PushBack(1, allocator).PushBack(2, allocator).PushBack(3, allocator).PushBack(4, allocator);
+    EXPECT_TRUE(x.IsArray());
+    EXPECT_EQ(4u, x.Size());
+
+    // Value y(x); // does not compile (!is_copy_constructible)
+    Value y(std::move(x));
+    EXPECT_TRUE(x.IsNull());
+    EXPECT_TRUE(y.IsArray());
+    EXPECT_EQ(4u, y.Size());
+
+    // Value z = y; // does not compile (!is_copy_assignable)
+    Value z = std::move(y);
+    EXPECT_TRUE(y.IsNull());
+    EXPECT_TRUE(z.IsArray());
+    EXPECT_EQ(4u, z.Size());
+}
+
+#endif // RAPIDJSON_HAS_CXX11_RVALUE_REFS
+
+TEST(Value, AssignmentOperator) {
     Value x(1234);
     Value y;
     y = x;
@@ -63,6 +122,22 @@ TEST(Value, assignment_operator) {
     y = StringRef(mstr);
     EXPECT_TRUE(y.IsString());
     EXPECT_EQ(y.GetString(),mstr);
+
+#if RAPIDJSON_HAS_CXX11_RVALUE_REFS
+    // C++11 move assignment
+    x = Value("World");
+    EXPECT_TRUE(x.IsString());
+    EXPECT_STREQ("World", x.GetString());
+
+    x = std::move(y);
+    EXPECT_TRUE(y.IsNull());
+    EXPECT_TRUE(x.IsString());
+    EXPECT_EQ(x.GetString(), mstr);
+
+    y = std::move(Value().SetInt(1234));
+    EXPECT_TRUE(y.IsInt());
+    EXPECT_EQ(1234, y);
+#endif // RAPIDJSON_HAS_CXX11_RVALUE_REFS
 }
 
 template <typename A, typename B> 
@@ -81,7 +156,7 @@ void TestUnequal(const A& a, const B& b) {
     EXPECT_TRUE (b != a);
 }
 
-TEST(Value, equalto_operator) {
+TEST(Value, EqualtoOperator) {
     Value::AllocatorType allocator;
     Value x(kObjectType);
     x.AddMember("hello", "world", allocator)
@@ -105,16 +180,49 @@ TEST(Value, equalto_operator) {
     TestEqual(x["i"], 123);
     TestEqual(x["pi"], 3.14);
 
-    // Test operator==()
-    Value y;
-    y.CopyFrom(x, allocator);
+    // Test operator==() (including different allocators)
+    CrtAllocator crtAllocator;
+    GenericValue<UTF8<>, CrtAllocator> y;
+    GenericDocument<UTF8<>, CrtAllocator> z(&crtAllocator);
+    y.CopyFrom(x, crtAllocator);
+    z.CopyFrom(y, z.GetAllocator());
     TestEqual(x, y);
+    TestEqual(y, z);
+    TestEqual(z, x);
 
     // Swapping member order should be fine.
-    y.RemoveMember("t");
+    EXPECT_TRUE(y.RemoveMember("t"));
     TestUnequal(x, y);
-    y.AddMember("t", Value(true).Move(), allocator);
+    TestUnequal(z, y);
+    EXPECT_TRUE(z.RemoveMember("t"));
+    TestUnequal(x, z);
+    TestEqual(y, z);
+    y.AddMember("t", false, crtAllocator);
+    z.AddMember("t", false, z.GetAllocator());
+    TestUnequal(x, y);
+    TestUnequal(z, x);
+    y["t"] = true;
+    z["t"] = true;
     TestEqual(x, y);
+    TestEqual(y, z);
+    TestEqual(z, x);
+
+    // Swapping element order is not OK
+    x["a"][0].Swap(x["a"][1]);
+    TestUnequal(x, y);
+    x["a"][0].Swap(x["a"][1]);
+    TestEqual(x, y);
+
+    // Array of different size
+    x["a"].PushBack(4, allocator);
+    TestUnequal(x, y);
+    x["a"].PopBack();
+    TestEqual(x, y);
+
+    // Issue #129: compare Uint64
+    x.SetUint64(RAPIDJSON_UINT64_C2(0xFFFFFFFF, 0xFFFFFFF0));
+    y.SetUint64(RAPIDJSON_UINT64_C2(0xFFFFFFFF, 0xFFFFFFFF));
+    TestUnequal(x, y);
 }
 
 template <typename Value>
@@ -130,6 +238,13 @@ void TestCopyFrom() {
     EXPECT_TRUE(v1.GetType() == v2.GetType());
     EXPECT_STREQ(v1.GetString(), v2.GetString());
     EXPECT_EQ(v1.GetString(), v2.GetString()); // string NOT copied
+
+    v1.SetString("bar", a); // copy string
+    v2.CopyFrom(v1, a);
+    EXPECT_TRUE(v1.GetType() == v2.GetType());
+    EXPECT_STREQ(v1.GetString(), v2.GetString());
+    EXPECT_NE(v1.GetString(), v2.GetString()); // string copied
+
 
     v1.SetArray().PushBack(1234, a);
     v2.CopyFrom(v1, a);
@@ -157,6 +272,12 @@ TEST(Value, Swap) {
     EXPECT_TRUE(v1.IsObject());
     EXPECT_TRUE(v2.IsInt());
     EXPECT_EQ(1234, v2.GetInt());
+
+    // testing std::swap compatibility
+    using std::swap;
+    swap(v1, v2);
+    EXPECT_TRUE(v1.IsInt());
+    EXPECT_TRUE(v2.IsObject());
 }
 
 TEST(Value, Null) {
@@ -241,7 +362,7 @@ TEST(Value, Int) {
     EXPECT_EQ(1234u, x.GetUint());
     EXPECT_EQ(1234, x.GetInt64());
     EXPECT_EQ(1234u, x.GetUint64());
-    EXPECT_EQ(1234, x.GetDouble());
+    EXPECT_NEAR(1234.0, x.GetDouble(), 0.0);
     //EXPECT_EQ(1234, (int)x);
     //EXPECT_EQ(1234, (unsigned)x);
     //EXPECT_EQ(1234, (int64_t)x);
@@ -299,7 +420,7 @@ TEST(Value, Uint) {
     EXPECT_TRUE(x.IsUint());
     EXPECT_TRUE(x.IsInt64());
     EXPECT_TRUE(x.IsUint64());
-    EXPECT_EQ(1234.0, x.GetDouble());   // Number can always be cast as double but !IsDouble().
+    EXPECT_NEAR(1234.0, x.GetDouble(), 0.0);   // Number can always be cast as double but !IsDouble().
 
     EXPECT_FALSE(x.IsDouble());
     EXPECT_FALSE(x.IsNull());
@@ -364,10 +485,19 @@ TEST(Value, Int64) {
     z.SetInt64(2147483648LL);   // 2^31, cannot cast as int
     EXPECT_FALSE(z.IsInt());
     EXPECT_TRUE(z.IsUint());
+    EXPECT_NEAR(2147483648.0, z.GetDouble(), 0.0);
 
     z.SetInt64(4294967296LL);   // 2^32, cannot cast as uint
     EXPECT_FALSE(z.IsInt());
     EXPECT_FALSE(z.IsUint());
+    EXPECT_NEAR(4294967296.0, z.GetDouble(), 0.0);
+
+    z.SetInt64(-2147483649LL);   // -2^31-1, cannot cast as int
+    EXPECT_FALSE(z.IsInt());
+    EXPECT_NEAR(-2147483649.0, z.GetDouble(), 0.0);
+
+    z.SetInt64(static_cast<int64_t>(RAPIDJSON_UINT64_C2(0x80000000, 00000000)));
+    EXPECT_DOUBLE_EQ(-9223372036854775808.0, z.GetDouble());
 }
 
 TEST(Value, Uint64) {
@@ -410,16 +540,15 @@ TEST(Value, Uint64) {
 
     z.SetUint64(9223372036854775808uLL);    // 2^63 cannot cast as int64
     EXPECT_FALSE(z.IsInt64());
-
-    // Issue 48
-    EXPECT_EQ(9223372036854775808uLL, z.GetUint64());
+    EXPECT_EQ(9223372036854775808uLL, z.GetUint64()); // Issue 48
+    EXPECT_DOUBLE_EQ(9223372036854775808.0, z.GetDouble());
 }
 
 TEST(Value, Double) {
     // Constructor with double
     Value x(12.34);
     EXPECT_EQ(kNumberType, x.GetType());
-    EXPECT_EQ(12.34, x.GetDouble());
+    EXPECT_NEAR(12.34, x.GetDouble(), 0.0);
     EXPECT_TRUE(x.IsNumber());
     EXPECT_TRUE(x.IsDouble());
 
@@ -435,10 +564,10 @@ TEST(Value, Double) {
     // SetDouble()
     Value z;
     z.SetDouble(12.34);
-    EXPECT_EQ(12.34, z.GetDouble());
+    EXPECT_NEAR(12.34, z.GetDouble(), 0.0);
 
     z = 56.78;
-    EXPECT_EQ(56.78, z.GetDouble());
+    EXPECT_NEAR(56.78, z.GetDouble(), 0.0);
 }
 
 TEST(Value, String) {
@@ -500,7 +629,7 @@ TEST(Value, String) {
     // Constructor with type
     Value y(kStringType);
     EXPECT_TRUE(y.IsString());
-    EXPECT_EQ(0, y.GetString());
+    EXPECT_STREQ("", y.GetString());    // Empty string should be "" instead of 0 (issue 226)
     EXPECT_EQ(0u, y.GetStringLength());
 
     // SetConsttring()
@@ -538,7 +667,7 @@ TEST(Value, String) {
     EXPECT_STREQ("World", w.GetString());
     EXPECT_EQ(5u, w.GetStringLength());
 
-#ifdef RAPIDJSON_HAS_STDSTRING
+#if RAPIDJSON_HAS_STDSTRING
     {
         std::string str = "Hello World";
         str[5] = '\0';
@@ -575,6 +704,12 @@ TEST(Value, String) {
         TestEqual(vs0, vs1);
     }
 #endif // RAPIDJSON_HAS_STDSTRING
+}
+
+// Issue 226: Value of string type should not point to NULL
+TEST(Value, SetStringNullException) {
+    Value v;
+    EXPECT_THROW(v.SetString(0, 0), AssertException);
 }
 
 TEST(Value, Array) {
@@ -614,17 +749,32 @@ TEST(Value, Array) {
     EXPECT_FALSE(y.Empty());
     EXPECT_EQ(5u, y.Size());
     EXPECT_TRUE(x[SizeType(0)].IsNull());
-    EXPECT_TRUE(x[1u].IsTrue());
-    EXPECT_TRUE(x[2u].IsFalse());
-    EXPECT_TRUE(x[3u].IsInt());
-    EXPECT_EQ(123, x[3u].GetInt());
+    EXPECT_TRUE(x[1].IsTrue());
+    EXPECT_TRUE(x[2].IsFalse());
+    EXPECT_TRUE(x[3].IsInt());
+    EXPECT_EQ(123, x[3].GetInt());
     EXPECT_TRUE(y[SizeType(0)].IsNull());
-    EXPECT_TRUE(y[1u].IsTrue());
-    EXPECT_TRUE(y[2u].IsFalse());
-    EXPECT_TRUE(y[3u].IsInt());
-    EXPECT_EQ(123, y[3u].GetInt());
-    EXPECT_TRUE(y[4u].IsString());
-    EXPECT_STREQ("foo", y[4u].GetString());
+    EXPECT_TRUE(y[1].IsTrue());
+    EXPECT_TRUE(y[2].IsFalse());
+    EXPECT_TRUE(y[3].IsInt());
+    EXPECT_EQ(123, y[3].GetInt());
+    EXPECT_TRUE(y[4].IsString());
+    EXPECT_STREQ("foo", y[4].GetString());
+
+#if RAPIDJSON_HAS_CXX11_RVALUE_REFS
+    // PushBack(GenericValue&&, Allocator&);
+    {
+        Value y(kArrayType);
+        y.PushBack(Value(true), allocator);
+        y.PushBack(std::move(Value(kArrayType).PushBack(Value(1), allocator).PushBack("foo", allocator)), allocator);
+        EXPECT_EQ(2u, y.Size());
+        EXPECT_TRUE(y[0].IsTrue());
+        EXPECT_TRUE(y[1].IsArray());
+        EXPECT_EQ(2u, y[1].Size());
+        EXPECT_TRUE(y[1][0].IsInt());
+        EXPECT_TRUE(y[1][1].IsString());
+    }
+#endif
 
     // iterator
     Value::ValueIterator itr = x.Begin();
@@ -668,9 +818,9 @@ TEST(Value, Array) {
     x.PopBack();
     EXPECT_EQ(4u, x.Size());
     EXPECT_TRUE(y[SizeType(0)].IsNull());
-    EXPECT_TRUE(y[1u].IsTrue());
-    EXPECT_TRUE(y[2u].IsFalse());
-    EXPECT_TRUE(y[3u].IsInt());
+    EXPECT_TRUE(y[1].IsTrue());
+    EXPECT_TRUE(y[2].IsFalse());
+    EXPECT_TRUE(y[3].IsInt());
 
     // Clear()
     x.Clear();
@@ -691,23 +841,23 @@ TEST(Value, Array) {
     EXPECT_EQ(x.Begin(), itr);
     EXPECT_EQ(9u, x.Size());
     for (int i = 0; i < 9; i++)
-        EXPECT_EQ(i + 1, x[i][0u].GetInt());
+        EXPECT_EQ(i + 1, x[i][0].GetInt());
 
     // Ease the last
     itr = x.Erase(x.End() - 1);
     EXPECT_EQ(x.End(), itr);
     EXPECT_EQ(8u, x.Size());
     for (int i = 0; i < 8; i++)
-        EXPECT_EQ(i + 1, x[i][0u].GetInt());
+        EXPECT_EQ(i + 1, x[i][0].GetInt());
 
     // Erase the middle
     itr = x.Erase(x.Begin() + 4);
     EXPECT_EQ(x.Begin() + 4, itr);
     EXPECT_EQ(7u, x.Size());
     for (int i = 0; i < 4; i++)
-        EXPECT_EQ(i + 1, x[i][0u].GetInt());
+        EXPECT_EQ(i + 1, x[i][0].GetInt());
     for (int i = 4; i < 7; i++)
-        EXPECT_EQ(i + 2, x[i][0u].GetInt());
+        EXPECT_EQ(i + 2, x[i][0].GetInt());
 
     // Erase(ValueIterator, ValueIterator)
     // Exhaustive test with all 0 <= first < n, first <= last <= n cases
@@ -727,14 +877,13 @@ TEST(Value, Array) {
             size_t removeCount = last - first;
             EXPECT_EQ(n - removeCount, x.Size());
             for (unsigned i = 0; i < first; i++)
-                EXPECT_EQ(i, x[i][0u].GetUint());
+                EXPECT_EQ(i, x[i][0].GetUint());
             for (unsigned i = first; i < n - removeCount; i++)
-                EXPECT_EQ(i + removeCount, x[i][0u].GetUint());
+                EXPECT_EQ(i + removeCount, x[i][0].GetUint());
         }
     }
 
     // Working in gcc without C++11, but VS2013 cannot compile. To be diagnosed.
-#if 0
     // http://en.wikipedia.org/wiki/Erase-remove_idiom
     x.Clear();
     for (int i = 0; i < 10; i++)
@@ -743,11 +892,11 @@ TEST(Value, Array) {
         else
             x.PushBack(Value(kNullType).Move(), allocator);
 
-    x.Erase(std::remove(x.Begin(), x.End(), Value(kNullType)), x.End());
+    const Value null(kNullType);
+    x.Erase(std::remove(x.Begin(), x.End(), null), x.End());
     EXPECT_EQ(5u, x.Size());
     for (int i = 0; i < 5; i++)
         EXPECT_EQ(i * 2, x[i]);
-#endif
 
     // SetArray()
     Value z;
@@ -763,14 +912,21 @@ TEST(Value, Object) {
 
     EXPECT_EQ(kObjectType, x.GetType());
     EXPECT_TRUE(x.IsObject());
+    EXPECT_TRUE(x.ObjectEmpty());
+    EXPECT_EQ(0u, x.MemberCount());
     EXPECT_EQ(kObjectType, y.GetType());
     EXPECT_TRUE(y.IsObject());
+    EXPECT_TRUE(y.ObjectEmpty());
+    EXPECT_EQ(0u, y.MemberCount());
 
     // AddMember()
     x.AddMember("A", "Apple", allocator);
+    EXPECT_FALSE(x.ObjectEmpty());
+    EXPECT_EQ(1u, x.MemberCount());
 
     Value value("Banana", 6);
     x.AddMember("B", "Banana", allocator);
+    EXPECT_EQ(2u, x.MemberCount());
 
     // AddMember<T>(StringRefType, T, Allocator)
     {
@@ -791,7 +947,50 @@ TEST(Value, Object) {
         EXPECT_EQ(INT64_C(-4294967296), o["int64"].GetInt64());
         EXPECT_EQ(UINT64_C(4294967296), o["uint64"].GetUint64());
         EXPECT_STREQ("Jelly",o["string"].GetString());
+        EXPECT_EQ(8u, o.MemberCount());
     }
+
+    // AddMember<T>(Value&, T, Allocator)
+    {
+        Value o(kObjectType);
+
+        Value n("s");
+        o.AddMember(n, "string", allocator);
+        EXPECT_EQ(1u, o.MemberCount());
+
+        Value count("#");
+        o.AddMember(count, o.MemberCount(), allocator);
+        EXPECT_EQ(2u, o.MemberCount());
+    }
+
+#if RAPIDJSON_HAS_STDSTRING
+    {
+        // AddMember(StringRefType, const std::string&, Allocator)
+        Value o(kObjectType);
+        o.AddMember("b", std::string("Banana"), allocator);
+        EXPECT_STREQ("Banana", o["b"].GetString());
+
+        // RemoveMember(const std::string&)
+        o.RemoveMember(std::string("b"));
+        EXPECT_TRUE(o.ObjectEmpty());
+    }
+#endif
+
+#if RAPIDJSON_HAS_CXX11_RVALUE_REFS
+    // AddMember(GenericValue&&, ...) variants
+    {
+        Value o(kObjectType);
+        o.AddMember(Value("true"), Value(true), allocator);
+        o.AddMember(Value("false"), Value(false).Move(), allocator);    // value is lvalue ref
+        o.AddMember(Value("int").Move(), Value(-1), allocator);         // name is lvalue ref
+        o.AddMember("uint", std::move(Value().SetUint(1u)), allocator); // name is literal, value is rvalue
+        EXPECT_TRUE(o["true"].GetBool());
+        EXPECT_FALSE(o["false"].GetBool());
+        EXPECT_EQ(-1, o["int"].GetInt());
+        EXPECT_EQ(1u, o["uint"].GetUint());
+        EXPECT_EQ(4u, o.MemberCount());
+    }
+#endif
 
     // Tests a member with null character
     Value name;
@@ -806,19 +1005,37 @@ TEST(Value, Object) {
     EXPECT_TRUE(y.HasMember("A"));
     EXPECT_TRUE(y.HasMember("B"));
 
+#if RAPIDJSON_HAS_STDSTRING
+    EXPECT_TRUE(x.HasMember(std::string("A")));
+#endif
+
     name.SetString("C\0D");
     EXPECT_TRUE(x.HasMember(name));
     EXPECT_TRUE(y.HasMember(name));
+
+    GenericValue<UTF8<>, CrtAllocator> othername("A");
+    EXPECT_TRUE(x.HasMember(othername));
+    EXPECT_TRUE(y.HasMember(othername));
+    othername.SetString("C\0D");
+    EXPECT_TRUE(x.HasMember(othername));
+    EXPECT_TRUE(y.HasMember(othername));
 
     // operator[]
     EXPECT_STREQ("Apple", x["A"].GetString());
     EXPECT_STREQ("Banana", x["B"].GetString());
     EXPECT_STREQ("CherryD", x[C0D].GetString());
+    EXPECT_STREQ("CherryD", x[othername].GetString());
+    EXPECT_THROW(x["nonexist"], AssertException);
 
     // const operator[]
     EXPECT_STREQ("Apple", y["A"].GetString());
     EXPECT_STREQ("Banana", y["B"].GetString());
     EXPECT_STREQ("CherryD", y[C0D].GetString());
+
+#if RAPIDJSON_HAS_STDSTRING
+    EXPECT_STREQ("Apple", x["A"].GetString());
+    EXPECT_STREQ("Apple", y[std::string("A")].GetString());
+#endif
 
     // member iterator
     Value::MemberIterator itr = x.MemberBegin(); 
@@ -852,14 +1069,41 @@ TEST(Value, Object) {
     ++citr;
     EXPECT_FALSE(citr != y.MemberEnd());
 
+    // member iterator conversions/relations
+    itr  = x.MemberBegin();
+    citr = x.MemberBegin(); // const conversion
+    TestEqual(itr, citr);
+    EXPECT_TRUE(itr < x.MemberEnd());
+    EXPECT_FALSE(itr > y.MemberEnd());
+    EXPECT_TRUE(citr < x.MemberEnd());
+    EXPECT_FALSE(citr > y.MemberEnd());
+    ++citr;
+    TestUnequal(itr, citr);
+    EXPECT_FALSE(itr < itr);
+    EXPECT_TRUE(itr < citr);
+    EXPECT_FALSE(itr > itr);
+    EXPECT_TRUE(citr > itr);
+    EXPECT_EQ(1, citr - x.MemberBegin());
+    EXPECT_EQ(0, itr - y.MemberBegin());
+    itr += citr - x.MemberBegin();
+    EXPECT_EQ(1, itr - y.MemberBegin());
+    TestEqual(citr, itr);
+    EXPECT_TRUE(itr <= citr);
+    EXPECT_TRUE(citr <= itr);
+    itr++;
+    EXPECT_TRUE(itr >= citr);
+    EXPECT_FALSE(citr >= itr);
+
     // RemoveMember()
-    x.RemoveMember("A");
+    EXPECT_TRUE(x.RemoveMember("A"));
     EXPECT_FALSE(x.HasMember("A"));
 
-    x.RemoveMember("B");
+    EXPECT_TRUE(x.RemoveMember("B"));
     EXPECT_FALSE(x.HasMember("B"));
 
-    x.RemoveMember(name);
+    EXPECT_FALSE(x.RemoveMember("nonexist"));
+
+    EXPECT_TRUE(x.RemoveMember(othername));
     EXPECT_FALSE(x.HasMember(name));
 
     EXPECT_TRUE(x.MemberBegin() == x.MemberEnd());
@@ -872,38 +1116,41 @@ TEST(Value, Object) {
     for (int i = 0; i < 10; i++)
         x.AddMember(keys[i], Value(kArrayType).PushBack(i, allocator), allocator);
 
+    // MemberCount, iterator difference
+    EXPECT_EQ(x.MemberCount(), SizeType(x.MemberEnd() - x.MemberBegin()));
+
     // Erase the first
     itr = x.EraseMember(x.MemberBegin());
     EXPECT_FALSE(x.HasMember(keys[0]));
     EXPECT_EQ(x.MemberBegin(), itr);
-    EXPECT_EQ(9, x.MemberEnd() - x.MemberBegin());
+    EXPECT_EQ(9u, x.MemberCount());
     for (; itr != x.MemberEnd(); ++itr) {
         int i = (itr - x.MemberBegin()) + 1;
         EXPECT_STREQ(itr->name.GetString(), keys[i]);
-        EXPECT_EQ(i, itr->value[0u].GetInt());
+        EXPECT_EQ(i, itr->value[0].GetInt());
     }
 
     // Erase the last
     itr = x.EraseMember(x.MemberEnd() - 1);
     EXPECT_FALSE(x.HasMember(keys[9]));
     EXPECT_EQ(x.MemberEnd(), itr);
-    EXPECT_EQ(8, x.MemberEnd() - x.MemberBegin());
+    EXPECT_EQ(8u, x.MemberCount());
     for (; itr != x.MemberEnd(); ++itr) {
         int i = (itr - x.MemberBegin()) + 1;
         EXPECT_STREQ(itr->name.GetString(), keys[i]);
-        EXPECT_EQ(i, itr->value[0u].GetInt());
+        EXPECT_EQ(i, itr->value[0].GetInt());
     }
 
     // Erase the middle
     itr = x.EraseMember(x.MemberBegin() + 4);
     EXPECT_FALSE(x.HasMember(keys[5]));
     EXPECT_EQ(x.MemberBegin() + 4, itr);
-    EXPECT_EQ(7, x.MemberEnd() - x.MemberBegin());
+    EXPECT_EQ(7u, x.MemberCount());
     for (; itr != x.MemberEnd(); ++itr) {
         int i = (itr - x.MemberBegin());
         i += (i<4) ? 1 : 2;
         EXPECT_STREQ(itr->name.GetString(), keys[i]);
-        EXPECT_EQ(i, itr->value[0u].GetInt());
+        EXPECT_EQ(i, itr->value[0].GetInt());
     }
 
     // EraseMember(ConstMemberIterator, ConstMemberIterator)
@@ -922,18 +1169,41 @@ TEST(Value, Object) {
                 EXPECT_EQ(x.MemberBegin() + first, itr);
 
             size_t removeCount = last - first;
-            EXPECT_EQ(n - removeCount, size_t(x.MemberEnd() - x.MemberBegin()));
+            EXPECT_EQ(n - removeCount, x.MemberCount());
             for (unsigned i = 0; i < first; i++)
-                EXPECT_EQ(i, x[keys[i]][0u].GetUint());
+                EXPECT_EQ(i, x[keys[i]][0].GetUint());
             for (unsigned i = first; i < n - removeCount; i++)
-                EXPECT_EQ(i + removeCount, x[keys[i+removeCount]][0u].GetUint());
+                EXPECT_EQ(i + removeCount, x[keys[i+removeCount]][0].GetUint());
         }
     }
+
+    // RemoveAllMembers()
+    x.RemoveAllMembers();
+    EXPECT_TRUE(x.ObjectEmpty());
+    EXPECT_EQ(0u, x.MemberCount());
 
     // SetObject()
     Value z;
     z.SetObject();
     EXPECT_TRUE(z.IsObject());
+}
+
+TEST(Value, EraseMember_String) {
+    Value::AllocatorType allocator;
+    Value x(kObjectType);
+    x.AddMember("A", "Apple", allocator);
+    x.AddMember("B", "Banana", allocator);
+
+    EXPECT_TRUE(x.EraseMember("B"));
+    EXPECT_FALSE(x.HasMember("B"));
+
+    EXPECT_FALSE(x.EraseMember("nonexist"));
+
+    GenericValue<UTF8<>, CrtAllocator> othername("A");
+    EXPECT_TRUE(x.EraseMember(othername));
+    EXPECT_FALSE(x.HasMember("A"));
+
+    EXPECT_TRUE(x.MemberBegin() == x.MemberEnd());
 }
 
 TEST(Value, BigNestedArray) {
@@ -1020,4 +1290,67 @@ TEST(Document, CrtAllocator) {
 
     V a(kArrayType);
     a.PushBack(1, allocator);   // Should not call destructor on uninitialized Value of newly allocated elements.
+}
+
+static void TestShortStringOptimization(const char* str) {
+    const rapidjson::SizeType len = (rapidjson::SizeType)strlen(str);
+	
+    rapidjson::Document doc;
+    rapidjson::Value val;
+    val.SetString(str, len, doc.GetAllocator());
+	
+	EXPECT_EQ(val.GetStringLength(), len);
+	EXPECT_STREQ(val.GetString(), str);
+}
+
+TEST(Value, AllocateShortString) {
+	TestShortStringOptimization("");                 // edge case: empty string
+	TestShortStringOptimization("12345678");         // regular case for short strings: 8 chars
+	TestShortStringOptimization("12345678901");      // edge case: 11 chars in 32-bit mode (=> short string)
+	TestShortStringOptimization("123456789012");     // edge case: 12 chars in 32-bit mode (=> regular string)
+	TestShortStringOptimization("123456789012345");  // edge case: 15 chars in 64-bit mode (=> short string)
+	TestShortStringOptimization("1234567890123456"); // edge case: 16 chars in 64-bit mode (=> regular string)
+}
+
+template <int e>
+struct TerminateHandler {
+    bool Null() { return e != 0; }
+    bool Bool(bool) { return e != 1; }
+    bool Int(int) { return e != 2; }
+    bool Uint(unsigned) { return e != 3; }
+    bool Int64(int64_t) { return e != 4; }
+    bool Uint64(uint64_t) { return e != 5; }
+    bool Double(double) { return e != 6; }
+    bool String(const char*, SizeType, bool) { return e != 7; }
+    bool StartObject() { return e != 8; }
+    bool Key(const char*, SizeType, bool)  { return e != 9; }
+    bool EndObject(SizeType) { return e != 10; }
+    bool StartArray() { return e != 11; }
+    bool EndArray(SizeType) { return e != 12; }
+};
+
+#define TEST_TERMINATION(e, json)\
+{\
+    Document d; \
+    EXPECT_FALSE(d.Parse(json).HasParseError()); \
+    Reader reader; \
+    TerminateHandler<e> h;\
+    EXPECT_FALSE(d.Accept(h));\
+}
+
+TEST(Value, AcceptTerminationByHandler) {
+    TEST_TERMINATION(0, "[null]");
+    TEST_TERMINATION(1, "[true]");
+    TEST_TERMINATION(1, "[false]");
+    TEST_TERMINATION(2, "[-1]");
+    TEST_TERMINATION(3, "[2147483648]");
+    TEST_TERMINATION(4, "[-1234567890123456789]");
+    TEST_TERMINATION(5, "[9223372036854775808]");
+    TEST_TERMINATION(6, "[0.5]");
+    TEST_TERMINATION(7, "[\"a\"]");
+    TEST_TERMINATION(8, "[{}]");
+    TEST_TERMINATION(9, "[{\"a\":1}]");
+    TEST_TERMINATION(10, "[{}]");
+    TEST_TERMINATION(11, "{\"a\":[]}");
+    TEST_TERMINATION(12, "{\"a\":[]}");
 }

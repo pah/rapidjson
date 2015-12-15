@@ -1,10 +1,12 @@
 # Performance
 
+There is a [native JSON benchmark collection] [1] which evaluates speed, memory usage and code size of various operations among 20 JSON libaries.
+
+[1]: https://github.com/miloyip/nativejson-benchmark
+
 The old performance article for RapidJSON 0.1 is provided [here](https://code.google.com/p/rapidjson/wiki/Performance).
 
-This file will be updated with new version and better procedures.
-
-In the meantime, you may also refer to the following third-party benchmarks.
+Additionally, you may refer to the following third-party benchmarks.
 
 ## Third-party benchmarks
 

@@ -3,10 +3,10 @@
 
 #include "rapidjson/document.h"     // rapidjson's DOM-style API
 #include "rapidjson/prettywriter.h" // for stringify JSON
-#include "rapidjson/filestream.h"   // wrapper of C stream for prettywriter as output
 #include <cstdio>
 
 using namespace rapidjson;
+using namespace std;
 
 int main(int, char*[]) {
     ////////////////////////////////////////////////////////////////////////////
@@ -23,12 +23,10 @@ int main(int, char*[]) {
         return 1;
 #else
     // In-situ parsing, decode strings directly in the source string. Source must be string.
-    {
-        char buffer[sizeof(json)];
-        memcpy(buffer, json, sizeof(json));
-        if (document.ParseInsitu(buffer).HasParseError())
-            return 1;
-    }
+    char buffer[sizeof(json)];
+    memcpy(buffer, json, sizeof(json));
+    if (document.ParseInsitu(buffer).HasParseError())
+        return 1;
 #endif
 
     printf("\nParsing to document succeeded.\n");
@@ -72,12 +70,8 @@ int main(int, char*[]) {
         for (SizeType i = 0; i < a.Size(); i++) // rapidjson uses SizeType instead of size_t.
             printf("a[%d] = %d\n", i, a[i].GetInt());
         
-        // Note:
-        //int x = a[0].GetInt();                    // Error: operator[ is ambiguous, as 0 also mean a null pointer of const char* type.
-        int y = a[SizeType(0)].GetInt();            // Cast to SizeType will work.
-        int z = a[0u].GetInt();                     // This works too.
+        int y = a[0].GetInt();
         (void)y;
-        (void)z;
 
         // Iterating array with iterators
         printf("a = ");
@@ -148,9 +142,10 @@ int main(int, char*[]) {
     // 4. Stringify JSON
 
     printf("\nModified JSON with reformatting:\n");
-    FileStream f(stdout);
-    PrettyWriter<FileStream> writer(f);
+    StringBuffer sb;
+    PrettyWriter<StringBuffer> writer(sb);
     document.Accept(writer);    // Accept() traverses the DOM and generates Handler events.
+    puts(sb.GetString());
 
     return 0;
 }
